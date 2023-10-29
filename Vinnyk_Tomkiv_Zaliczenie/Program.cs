@@ -13,6 +13,12 @@ namespace Vinnyk_Tomkiv_Zaliczenie
     {
         static void Main(string[] args)
         {
+            
+            if(!File.Exists(ConstVar.FileUserpath))
+            {
+                File.Create(ConstVar.FileUserpath).Close();
+                File.WriteAllText(ConstVar.FileUserpath, "[]");
+            }
             MenuManagment menuManagment = new MenuManagment();
             menuManagment.Menu();
         }

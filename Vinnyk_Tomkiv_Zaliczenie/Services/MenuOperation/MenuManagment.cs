@@ -11,16 +11,16 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
 {
     public class MenuManagment : IMenu
     {
-        private readonly ICustomerManagement _customerManagement;
+        private readonly IUserManagement _customerManagement;
 
         public MenuManagment() 
         {
-            _customerManagement = new CustomerManagment();
+            _customerManagement = new UserManagment();
         }
 
         public void Menu()
         {
-            Customer customer = new Customer();
+            User customer = new User();
             int choice;
             bool exit = true;
 
@@ -107,8 +107,11 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                 
             }
 
-            Customer customer = new Customer { Login = login, Password = password };
+            User customer = new User { Login = login, Password = password };
             _customerManagement.AddUser(customer);
+
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
         }
     }
 }

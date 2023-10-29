@@ -5,10 +5,10 @@ using Vinnyk_Tomkiv_Zaliczenie.Models;
 namespace Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagments
 {
     // Інтерфейс для керування клієнтами
-    public interface ICustomerManagement
+    public interface IUserManagement
     {
-        void AddUser(Customer customer);
-        void RemoveUser(Customer customer);
+        void AddUser(User customer);
+        void RemoveUser(User customer);
         string GetCustomerInfo();
         bool IsUserExist(string newLogin);
     }
