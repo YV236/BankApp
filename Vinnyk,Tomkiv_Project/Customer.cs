@@ -50,11 +50,12 @@ namespace Vinnyk_Tomkiv_Project
                         log = false;
                     }
                 }
-                Console.Write("Create your password please:");
-                Password = Console.ReadLine();
 
                 while (pass)
                 {
+                    Console.Clear();
+                    Console.Write("Create your password please:");
+                    Password = Console.ReadLine();
                     Console.Write("Repeat your password please:");
                     TestP = Console.ReadLine();
                     if (TestP == Password)

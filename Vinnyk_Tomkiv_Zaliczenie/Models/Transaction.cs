@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vinnyk_Tomkiv_Zaliczenie;
 
-namespace Vinnyk_Tomkiv_Zaliczenie
+namespace Vinnyk_Tomkiv_Zaliczenie.Models
 {
     // Клас для представлення транзакцій
     public class Transaction

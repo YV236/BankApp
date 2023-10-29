@@ -49,7 +49,10 @@
     <Compile Include="Models\BankAccount.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Services\AccountOperations\IAccountOperations.cs" />
-    <Compile Include="Services\CustomerManagment\ICustomerManagement.cs" />
+    <Compile Include="Services\CustomerManagments\CustomerManagment.cs" />
+    <Compile Include="Services\CustomerManagments\ICustomerManagement.cs" />
+    <Compile Include="Services\MenuOperation\IMenu.cs" />
+    <Compile Include="Services\MenuOperation\MenuManagment.cs" />
     <Compile Include="Services\TransactionManagment\ITransactionManagment.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
