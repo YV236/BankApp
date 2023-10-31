@@ -9,10 +9,11 @@ using Vinnyk_Tomkiv_Zaliczenie;
 namespace Vinnyk_Tomkiv_Zaliczenie.Models
 {
     // Базовий клас банківського рахунку
-    public abstract class BankAccount
+    public class BankAccount
     {
+        public string Id { get; set; }
         public string AccountNumber { get; set; }
-        public decimal Balance { get; set; }
+        public double Balance { get; set; }
 
     }
 

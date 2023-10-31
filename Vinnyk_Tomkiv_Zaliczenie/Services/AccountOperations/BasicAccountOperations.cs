@@ -10,26 +10,26 @@ using Vinnyk_Tomkiv_Zaliczenie.Models;
 namespace Vinnyk_Tomkiv_Zaliczenie
 {
     // Клас для рахунку зберігання
-    public class SavingsAccount : IAccountOperations
+    public class BasicAccountOperations : IAccountOperations
     {
         // Реалізація методів IAccountOperations для рахунку зберігання
 
         // Логіка внесення грошей на рахунок зберігання
-        public void Deposit(decimal amount)
+        public void Deposit(double amount)
         {
 
 
         }
 
         // Логіка зняття грошей з рахунку зберігання
-        public void Withdraw(decimal amount)
+        public void Withdraw(double amount)
         {
 
 
         }
 
         // Логіка переказу з рахунку зберігання на інший рахунок
-        public void Transfer(BankAccount targetAccount, decimal amount)
+        public void Transfer(BankAccount targetAccount, double amount)
         {
 
 

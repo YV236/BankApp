@@ -22,7 +22,37 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagments
             File.WriteAllText(ConstVar.FileUserpath, JsonConvert.SerializeObject(userList));
         }
 
-        public string GetCustomerInfo()
+
+        public bool IsPasswordRight(string login, string password)
+        {
+            string userListStr = File.ReadAllText(ConstVar.FileUserpath);
+
+            var userList = JsonConvert.DeserializeObject<List<User>>(userListStr);
+
+            var user = userList.FirstOrDefault(x => x.Login == login);
+
+            if (user != null)
+            {
+                return user.Password == password;
+            }
+
+            return false;
+        }
+
+
+
+
+        //public bool IsPasswordRight(string login, string password)
+        //{
+        //    string userListStr = File.ReadAllText(ConstVar.FileUserpath);
+
+        //    var userList = JsonConvert.DeserializeObject<List<User>>(userListStr);
+
+        //    userList.Any(x => x.Login == login);
+        //    return
+        //}
+
+        public string GetUserInfo()
         {
             throw new NotImplementedException();
         }

@@ -7,9 +7,10 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagments
     // Інтерфейс для керування клієнтами
     public interface IUserManagement
     {
+        bool IsPasswordRight(string login, string password);
         void AddUser(User customer);
         void RemoveUser(User customer);
-        string GetCustomerInfo();
+        string GetUserInfo();
         bool IsUserExist(string newLogin);
     }
 

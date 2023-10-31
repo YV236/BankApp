@@ -9,5 +9,6 @@ namespace Vinnyk_Tomkiv_Zaliczenie
     public static class ConstVar
     {
         public const string FileUserpath = "PolyBankUserDB.json";
+        public const string FileBankAccpath = "PolyBankAccountsDB.json";
     }
 }

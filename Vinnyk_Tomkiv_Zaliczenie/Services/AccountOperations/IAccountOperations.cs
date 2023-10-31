@@ -12,9 +12,9 @@ namespace Vinnyk_Tomkiv_Zaliczenie
     // Інтерфейс для операцій на рахунках
     public interface IAccountOperations
     {
-        void Deposit(decimal amount);
-        void Withdraw(decimal amount);
-        void Transfer(BankAccount targetAccount, decimal amount);
+        void Deposit(double amount);
+        void Withdraw(double amount);
+        void Transfer(BankAccount targetAccount, double amount);
     }
 
 }

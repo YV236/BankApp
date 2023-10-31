@@ -5,17 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using Vinnyk_Tomkiv_Zaliczenie;
 using Vinnyk_Tomkiv_Zaliczenie.Models;
+using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment;
 using Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagments;
 
 namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
 {
     public class MenuManagment : IMenu
     {
-        private readonly IUserManagement _customerManagement;
+        private readonly IUserManagement _userManagement;
+
+        private readonly IBankAccountManagment _bankAccountManagment;
 
         public MenuManagment() 
         {
-            _customerManagement = new UserManagment();
+            _userManagement = new UserManagment();
+            _bankAccountManagment = new BankAccountManagment();
         }
 
         public void Menu()
@@ -41,7 +45,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                         break;
 
                     case 2:
-                        Console.WriteLine("user successfully logined");
+                        WriteUserLog();
                         break;
 
                     case 3:
@@ -82,9 +86,14 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                 login = Console.ReadLine();
                 if(login != string.Empty)
                 {
-                    if (!_customerManagement.IsUserExist(login))
+                    if (!_userManagement.IsUserExist(login))
                     {
                         log = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("User with this login already exist");
+                        Console.ReadKey();
                     }
                 }
             }
@@ -108,9 +117,56 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             }
 
             User customer = new User { Login = login, Password = password };
-            _customerManagement.AddUser(customer);
+            _userManagement.AddUser(customer);
+
+            BankAccount bankAccount = _bankAccountManagment.BankAccReg();
+            _bankAccountManagment.AddBankAcc(bankAccount, customer.Login);
 
             Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
+        }
+
+        private void WriteUserLog()
+        {
+            string logLogin = string.Empty;
+            string logPassword = string.Empty;
+
+            bool log = true;
+            bool pas = true;
+
+            int i = 0;
+
+            while (log)
+            {
+                Console.Clear();
+
+                Console.Write("Write your login please:");
+                logLogin = Console.ReadLine();
+
+                if (logLogin != string.Empty)
+                {
+                    if(_userManagement.IsUserExist(logLogin))
+                    {
+                        Console.Write("Write your password:");
+                        logPassword = Console.ReadLine();
+                        if(_userManagement.IsPasswordRight(logLogin, logPassword) == true)
+                        {
+                            log = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Wrong password");
+                            Console.ReadKey();
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Wrong Login");
+                        Console.ReadKey();
+                    }
+                }
+            }
+            Console.WriteLine("You loginned to your account your welcome: " + logLogin);
             Console.ReadKey();
         }
     }
