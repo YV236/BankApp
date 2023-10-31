@@ -69,7 +69,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             }
         }
 
-        private void RenderRegisterMenu()
+        public void RenderRegisterMenu()
         {
             Console.Clear();
 
@@ -126,7 +126,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             Console.ReadKey();
         }
 
-        private void WriteUserLog()
+        public void WriteUserLog()
         {
             string logLogin = string.Empty;
             string logPassword = string.Empty;
@@ -155,15 +155,26 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                         }
                         else
                         {
-                            Console.WriteLine("Wrong password");
+                            Console.WriteLine("You wrote the wrong password please try again");
+                            i++;
                             Console.ReadKey();
                         }
                     }
                     else
                     {
-                        Console.WriteLine("Wrong Login");
+                        Console.WriteLine("You wrote the wrong login please try again");
+                        i++;
                         Console.ReadKey();
                     }
+                }
+                else
+                {
+                    i++;
+                }
+
+                if (i >= 6)
+                {
+                    _userManagement.GivePropose();
                 }
             }
             Console.WriteLine("You loginned to your account your welcome: " + logLogin);
