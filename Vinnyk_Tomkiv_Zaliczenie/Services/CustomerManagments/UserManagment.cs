@@ -25,6 +25,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagments
 
         public void GivePropose()
         {
+            Console.Clear();
             MenuManagment menuManagment = new MenuManagment();
             int choice = 0;
             Console.WriteLine("If you don't remember your login, or password.");
@@ -32,22 +33,23 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagments
             Console.WriteLine("2.Create a new user");
             Console.WriteLine("3.Exit to main menu");
 
-            switch(choice)
+            choice=int.Parse(Console.ReadLine());
+
+            switch (choice)
             {
                 case 1:
-                    menuManagment.RenderRegisterMenu();
-                    break;
-                    
-                case 2:
                     menuManagment.WriteUserLog();
                     break;
-                    
+
+                case 2:
+                    menuManagment.RenderRegisterMenu();
+                    break;
+
                 case 3:
                     menuManagment.Menu();
                     break;
-
                 default:
-                    Console.WriteLine("Choose the option between 1-3");
+                    Console.WriteLine("Choose the option 1-3");
                     break;
             }
         }
@@ -68,9 +70,10 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagments
             return false;
         }
 
-        public string GetUserInfo()
+        public void GetUserInfo(string Login)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("You loginned to your account your welcome: " + Login);
+            Console.ReadKey();
         }
 
         public bool IsUserExist(string newLogin)

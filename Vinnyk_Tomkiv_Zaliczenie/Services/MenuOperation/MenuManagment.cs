@@ -156,29 +156,35 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                         else
                         {
                             Console.WriteLine("You wrote the wrong password please try again");
-                            i++;
+                            ++i;
                             Console.ReadKey();
                         }
                     }
                     else
                     {
                         Console.WriteLine("You wrote the wrong login please try again");
-                        i++;
+                        ++i;
                         Console.ReadKey();
                     }
                 }
                 else
                 {
-                    i++;
+                    ++i;
                 }
 
                 if (i >= 6)
                 {
-                    _userManagement.GivePropose();
+                    log = false;
                 }
             }
-            Console.WriteLine("You loginned to your account your welcome: " + logLogin);
-            Console.ReadKey();
+            if(i == 0)
+            {
+                _userManagement.GetUserInfo(logLogin);
+            }
+            else
+            {
+                _userManagement.GivePropose();
+            }
         }
     }
 }

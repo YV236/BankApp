@@ -11,7 +11,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagments
         bool IsPasswordRight(string login, string password);
         void AddUser(User customer);
         void RemoveUser(User customer);
-        string GetUserInfo();
+        void GetUserInfo(string Login);
         bool IsUserExist(string newLogin);
     }
 
