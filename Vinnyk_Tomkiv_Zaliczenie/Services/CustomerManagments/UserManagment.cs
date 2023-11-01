@@ -25,32 +25,38 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagments
 
         public void GivePropose()
         {
-            Console.Clear();
             MenuManagment menuManagment = new MenuManagment();
             int choice = 0;
-            Console.WriteLine("If you don't remember your login, or password.");
-            Console.WriteLine("1.Try again");
-            Console.WriteLine("2.Create a new user");
-            Console.WriteLine("3.Exit to main menu");
+            bool exit = true;
 
-            choice=int.Parse(Console.ReadLine());
-
-            switch (choice)
+           while(exit)
             {
-                case 1:
-                    menuManagment.WriteUserLog();
-                    break;
+                Console.Clear();
 
-                case 2:
-                    menuManagment.RenderRegisterMenu();
-                    break;
+                Console.WriteLine("If you don't remember your login, or password.");
+                Console.WriteLine("1.Try again");
+                Console.WriteLine("2.Create a new user");
+                Console.WriteLine("3.Exit to main menu");
 
-                case 3:
-                    menuManagment.Menu();
-                    break;
-                default:
-                    Console.WriteLine("Choose the option 1-3");
-                    break;
+                choice = int.Parse(Console.ReadLine());
+
+                switch (choice)
+                {
+                    case 1:
+                        menuManagment.WriteUserLog();
+                        break;
+
+                    case 2:
+                        menuManagment.RenderRegisterMenu();
+                        break;
+
+                    case 3:
+                        exit = false;
+                        break;
+                    default:
+                        Console.WriteLine("Choose the option 1-3");
+                        break;
+                }
             }
         }
 
@@ -69,11 +75,62 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagments
 
             return false;
         }
-
-        public void GetUserInfo(string Login)
+        public void GetUserInfo(string login)
         {
-            Console.WriteLine("You loginned to your account your welcome: " + Login);
+            string userListStr = File.ReadAllText(ConstVar.FileUserpath);
+            var userList = JsonConvert.DeserializeObject<List<User>>(userListStr);
+
+            string bankAccStr = File.ReadAllText(ConstVar.FileBankAccpath);
+            var bankList = JsonConvert.DeserializeObject<List<BankAccount>>(bankAccStr);
+
+            var user = userList.FirstOrDefault(x => x.Login == login);
+            var bank = bankList.FirstOrDefault(x => x.Id == login);
+            Console.Clear();
+
+            Console.WriteLine("Bank account info");
+            Console.WriteLine($"Login: {user.Login}");
+            Console.WriteLine($"Your bank account number: {bank.AccountNumber}");
+            Console.WriteLine($"Balance: {bank.Balance}");
             Console.ReadKey();
+        }
+
+        public void UserLoginedMenu(string login)
+        {
+            int choice;
+            bool exit = true;
+            
+            while (exit)
+            {
+                Console.Clear();
+
+                Console.WriteLine("You loginned successfully, welcome: " + login + "\n");
+                Console.WriteLine("Choose the option 1-3");
+                Console.WriteLine("1.Show bank account details");
+                Console.WriteLine("2.Options");
+                Console.WriteLine("3.Exit to main menu");
+
+                choice = int.Parse(Console.ReadLine());
+
+                switch (choice)
+                {
+                    case 1:
+                        GetUserInfo(login);
+                        break;
+
+                    case 2:
+                        Console.WriteLine("Options");
+                        break;
+
+                    case 3:
+                        exit = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Choose the option 1-3");
+                        break;
+
+                }
+            }
         }
 
         public bool IsUserExist(string newLogin)

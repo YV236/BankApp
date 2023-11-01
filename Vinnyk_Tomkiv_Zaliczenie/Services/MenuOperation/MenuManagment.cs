@@ -31,7 +31,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             while (exit)
             {
                 Console.Clear();
-                Console.WriteLine("Welcome to polyBank Application\nPlease enter your choice");
+                Console.WriteLine("Welcome to polyBank Application\nPlease enter your choice\n");
                 Console.WriteLine("1.Create a new user");
                 Console.WriteLine("2.Login as a user");
                 Console.WriteLine("3.Remove user");
@@ -62,10 +62,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                     default:
                         Console.WriteLine("Error try another option 1-5.");
                         break;
-
                 }
-
-
             }
         }
 
@@ -82,7 +79,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             while (log)
             {
                 Console.Clear();
-                Console.Write("Create your login please:");
+                Console.Write("Create your login please: ");
                 login = Console.ReadLine();
                 if(login != string.Empty)
                 {
@@ -102,11 +99,11 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             {
                 Console.Clear();
 
-                Console.Write("Create your password please:");
+                Console.Write("Create your password please: ");
                 password = Console.ReadLine();
                 if(password != string.Empty)
                 {
-                    Console.Write("Repeat your password please:");
+                    Console.Write("Repeat your password please: ");
                     if (password == Console.ReadLine())
                     {
                         Console.WriteLine("Your account successfully created");
@@ -140,14 +137,14 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             {
                 Console.Clear();
 
-                Console.Write("Write your login please:");
+                Console.Write("Write your login please: ");
                 logLogin = Console.ReadLine();
 
                 if (logLogin != string.Empty)
                 {
                     if(_userManagement.IsUserExist(logLogin))
                     {
-                        Console.Write("Write your password:");
+                        Console.Write("Write your password: ");
                         logPassword = Console.ReadLine();
                         if(_userManagement.IsPasswordRight(logLogin, logPassword) == true)
                         {
@@ -179,7 +176,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             }
             if(i == 0)
             {
-                _userManagement.GetUserInfo(logLogin);
+                _userManagement.UserLoginedMenu(logLogin);
             }
             else
             {
