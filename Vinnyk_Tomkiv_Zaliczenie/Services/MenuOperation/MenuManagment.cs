@@ -5,21 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using Vinnyk_Tomkiv_Zaliczenie;
 using Vinnyk_Tomkiv_Zaliczenie.Models;
-using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment;
-using Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagments;
+using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement;
+using Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagements;
+using Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations;
 
 namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
 {
-    public class MenuManagment : IMenu
+    public class MenuManagement : IMenu
     {
         private readonly IUserManagement _userManagement;
 
-        private readonly IBankAccountManagment _bankAccountManagment;
+        private readonly IBankAccountManagement _bankAccountManagement;
 
-        public MenuManagment() 
+        public MenuManagement() 
         {
-            _userManagement = new UserManagment();
-            _bankAccountManagment = new BankAccountManagment();
+            _userManagement = new UserManagement();
+            _bankAccountManagement = new BankAccountManagement();
         }
 
         public void Menu()
@@ -108,8 +109,8 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             User customer = new User { Login = login, Password = password };
             _userManagement.AddUser(customer);
 
-            BankAccount bankAccount = _bankAccountManagment.BankAccReg();
-            _bankAccountManagment.AddBankAcc(bankAccount, customer.Login);
+            BankAccount bankAccount = _bankAccountManagement.BankAccReg();
+            _bankAccountManagement.AddBankAcc(bankAccount, customer.Login);
 
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();
@@ -169,11 +170,65 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             }
             if(i < 6)
             {
-                _userManagement.UserLoginedMenu(logLogin);
+                UserLoginedMenu(logLogin);
             }
             else
             {
                 _userManagement.GivePropose();
+            }
+        }
+
+        private void ShowUserInfo(string login)
+        {
+            Console.Clear();
+
+            User user = _userManagement.GetUserInfo(login);
+            BankAccount account = _bankAccountManagement.GetBankAccInfo(login);
+
+            Console.WriteLine("Bank account info");
+            Console.WriteLine($"Login: {user.Login}");
+            Console.WriteLine($"Your bank account number: {account.AccountNumber}");
+            Console.WriteLine($"Balance: {account.Balance}");
+            Console.ReadKey();
+        }
+        public void UserLoginedMenu(string login)
+        {
+            int choice;
+            bool exit = true;
+            Settings settings = new Settings();
+
+
+            while (exit)
+            {
+                Console.Clear();
+
+                Console.WriteLine("You loginned successfully, welcome: " + login + "\n");
+                Console.WriteLine("Choose the option 1-3");
+                Console.WriteLine("1.Show bank account details");
+                Console.WriteLine("2.Options");
+                Console.WriteLine("3.Exit to main menu");
+
+                choice = int.Parse(Console.ReadLine());
+
+                switch (choice)
+                {
+                    case 1:
+                        ShowUserInfo(login);
+                            break;
+
+                    case 2:
+                        settings.SettingsMenu(login);
+                        break;
+
+                    case 3:
+                        exit = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Choose the option 1-3");
+                        break;
+
+                }
             }
         }
     }

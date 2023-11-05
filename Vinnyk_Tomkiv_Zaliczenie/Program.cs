@@ -24,7 +24,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie
                 File.Create(ConstVar.FileUserpath).Close();
                 File.WriteAllText(ConstVar.FileUserpath, "[]");
             }
-            MenuManagment menuManagment = new MenuManagment();
+            MenuManagement menuManagment = new MenuManagement();
             menuManagment.Menu();
         }
     }

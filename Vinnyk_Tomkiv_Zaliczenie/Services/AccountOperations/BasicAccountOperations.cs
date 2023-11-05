@@ -6,12 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Vinnyk_Tomkiv_Zaliczenie;
 using Vinnyk_Tomkiv_Zaliczenie.Models;
-using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment;
+using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement;
 
 namespace Vinnyk_Tomkiv_Zaliczenie
 {
     // Клас для рахунку зберігання
-    public class BasicAccountOperations : BankAccountManagment
+    public class BasicAccountOperations : BankAccountManagement
     {
         // Реалізація методів IAccountOperations для рахунку зберігання
 

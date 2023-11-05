@@ -7,18 +7,26 @@ using System.Text;
 using System.Threading.Tasks;
 using Vinnyk_Tomkiv_Zaliczenie.Models;
 
-namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment
+namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
 {
-    public class BankAccountManagment : IBankAccountManagment
+    public class BankAccountManagement : IBankAccountManagement
     {
         public bool IsBankAccExist(string accNumber)
         {
-
             string bankAccStr = File.ReadAllText(ConstVar.FileBankAccpath);
 
             var bankList = JsonConvert.DeserializeObject<List<BankAccount>>(bankAccStr);
 
             return bankList.Any(x => x.AccountNumber == accNumber);
+        }
+        public BankAccount GetBankAccInfo(string Id)
+        {
+            string bankAccStr = File.ReadAllText(ConstVar.FileBankAccpath);
+            var bankList = JsonConvert.DeserializeObject<List<BankAccount>>(bankAccStr);
+
+            BankAccount bank = bankList.FirstOrDefault(x => x.Id == Id);
+
+            return bank;
         }
 
         public void AddBankAcc(BankAccount bankAccount, string login)

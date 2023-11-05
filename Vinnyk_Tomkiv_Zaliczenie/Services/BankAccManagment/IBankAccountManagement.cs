@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using Vinnyk_Tomkiv_Zaliczenie.Models;
 
 
-namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment
+namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
 {
-    public interface IBankAccountManagment
+    public interface IBankAccountManagement
     {
         bool IsBankAccExist(string accNumber);
         void AddToUserBankAccList(BankAccount bankAccount, string Id);
         BankAccount BankAccReg();
         void AddBankAcc(BankAccount bankAccount, string login);
+        BankAccount GetBankAccInfo(string Id);
     }
 }
