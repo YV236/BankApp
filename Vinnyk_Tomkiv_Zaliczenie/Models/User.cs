@@ -14,6 +14,11 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Models
         public string Login { get; set; }
         public string Password { get; set; }
         public List<BankAccount> Accounts { get; set; }
+
+        public User()
+        {
+            Accounts = new List<BankAccount>();
+        }
     }
 
 }

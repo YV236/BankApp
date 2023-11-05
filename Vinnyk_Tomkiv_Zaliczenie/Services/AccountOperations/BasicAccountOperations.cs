@@ -6,30 +6,31 @@ using System.Text;
 using System.Threading.Tasks;
 using Vinnyk_Tomkiv_Zaliczenie;
 using Vinnyk_Tomkiv_Zaliczenie.Models;
+using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment;
 
 namespace Vinnyk_Tomkiv_Zaliczenie
 {
     // Клас для рахунку зберігання
-    public class BasicAccountOperations : IAccountOperations
+    public class BasicAccountOperations : BankAccountManagment
     {
         // Реалізація методів IAccountOperations для рахунку зберігання
 
         // Логіка внесення грошей на рахунок зберігання
-        public void Deposit(double amount)
+        public override void Deposit(double amount)
         {
 
 
         }
 
         // Логіка зняття грошей з рахунку зберігання
-        public void Withdraw(double amount)
+        public override void Withdraw(double amount)
         {
 
 
         }
 
         // Логіка переказу з рахунку зберігання на інший рахунок
-        public void Transfer(BankAccount targetAccount, double amount)
+        public override void Transfer(BankAccount targetAccount, double amount)
         {
 
 

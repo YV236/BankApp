@@ -31,11 +31,10 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             while (exit)
             {
                 Console.Clear();
-                Console.WriteLine("Welcome to polyBank Application\nPlease enter your choice\n");
+                Console.WriteLine("Welcome to PolyBank Application\nPlease enter your choice\n");
                 Console.WriteLine("1.Create a new user");
                 Console.WriteLine("2.Login as a user");
-                Console.WriteLine("3.Remove user");
-                Console.WriteLine("5.Exit Program");
+                Console.WriteLine("3.Exit Program");
                 choice = int.Parse(Console.ReadLine());
 
                 switch (choice)
@@ -49,18 +48,11 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                         break;
 
                     case 3:
-                        Console.WriteLine("user successfully removed");
-                        break;
-
-                    case 4:
-                        break;
-
-                    case 5:
                         exit = false;
                         break;
 
                     default:
-                        Console.WriteLine("Error try another option 1-5.");
+                        Console.WriteLine("Error try another option 1-3.");
                         break;
                 }
             }
@@ -129,7 +121,6 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             string logPassword = string.Empty;
 
             bool log = true;
-            bool pas = true;
 
             int i = 0;
 
@@ -146,7 +137,8 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                     {
                         Console.Write("Write your password: ");
                         logPassword = Console.ReadLine();
-                        if(_userManagement.IsPasswordRight(logLogin, logPassword) == true)
+
+                        if (_userManagement.IsPasswordRight(logLogin, logPassword) == true)
                         {
                             log = false;
                         }
@@ -166,6 +158,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                 }
                 else
                 {
+                    Console.WriteLine("You wrote the wrong login please try again");
                     ++i;
                 }
 
@@ -174,7 +167,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                     log = false;
                 }
             }
-            if(i == 0)
+            if(i < 6)
             {
                 _userManagement.UserLoginedMenu(logLogin);
             }

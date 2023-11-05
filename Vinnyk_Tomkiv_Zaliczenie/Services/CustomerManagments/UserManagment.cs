@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vinnyk_Tomkiv_Zaliczenie.Models;
 using Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation;
+using Vinnyk_Tomkiv_Zaliczenie.Services.OptionPorations;
 
 namespace Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagments
 {
@@ -44,10 +45,12 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagments
                 {
                     case 1:
                         menuManagment.WriteUserLog();
+                        exit = false;
                         break;
 
                     case 2:
                         menuManagment.RenderRegisterMenu();
+                        exit = false;
                         break;
 
                     case 3:
@@ -98,7 +101,9 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagments
         {
             int choice;
             bool exit = true;
-            
+            Settings settings = new Settings();
+
+
             while (exit)
             {
                 Console.Clear();
@@ -118,7 +123,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagments
                         break;
 
                     case 2:
-                        Console.WriteLine("Options");
+                        settings.SettingsMenu(login);
                         break;
 
                     case 3:
