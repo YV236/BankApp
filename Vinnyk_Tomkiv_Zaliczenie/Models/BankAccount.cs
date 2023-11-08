@@ -14,6 +14,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Models
         public string Id { get; set; }
         public string AccountNumber { get; set; }
         public double Balance { get; set; }
+        public int BankAccountIndex { get; set; }
 
     }
 

@@ -45,7 +45,8 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                         break;
 
                     case 2:
-                        WriteUserLog();
+                        WriteUserLogin();
+
                         break;
 
                     case 3:
@@ -110,13 +111,14 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             _userManagement.AddUser(customer);
 
             BankAccount bankAccount = _bankAccountManagement.BankAccReg();
-            _bankAccountManagement.AddBankAcc(bankAccount, customer.Login);
+
+            _bankAccountManagement.AddToUserBankAccList(bankAccount, customer.Login);
 
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();
         }
 
-        public void WriteUserLog()
+        public void WriteUserLogin()
         {
             string logLogin = string.Empty;
             string logPassword = string.Empty;
@@ -174,16 +176,16 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             }
             else
             {
-                _userManagement.GivePropose();
+                GivePropose();
             }
         }
 
-        private void ShowUserInfo(string login)
+        private void ShowUserInfo(string login, int index)
         {
             Console.Clear();
 
             User user = _userManagement.GetUserInfo(login);
-            BankAccount account = _bankAccountManagement.GetBankAccInfo(login);
+            BankAccount account = _bankAccountManagement.GetBankAccInfo(login,index);
 
             Console.WriteLine("Bank account info");
             Console.WriteLine($"Login: {user.Login}");
@@ -191,12 +193,15 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             Console.WriteLine($"Balance: {account.Balance}");
             Console.ReadKey();
         }
-        public void UserLoginedMenu(string login)
+
+        private void UserLoginedMenu(string login)
         {
             int choice;
             bool exit = true;
             Settings settings = new Settings();
 
+            BankAccount bankAccount = new BankAccount();
+            bankAccount.BankAccountIndex = 0;
 
             while (exit)
             {
@@ -213,11 +218,11 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                 switch (choice)
                 {
                     case 1:
-                        ShowUserInfo(login);
+                        ShowUserInfo(login, bankAccount.BankAccountIndex);
                             break;
 
                     case 2:
-                        settings.SettingsMenu(login);
+                        settings.SettingsMenu(login, bankAccount.BankAccountIndex);
                         break;
 
                     case 3:
@@ -228,6 +233,44 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                         Console.WriteLine("Choose the option 1-3");
                         break;
 
+                }
+            }
+        }
+
+        private void GivePropose()
+        {
+            int choice = 0;
+            bool exit = true;
+
+            while (exit)
+            {
+                Console.Clear();
+
+                Console.WriteLine("If you don't remember your login, or password.");
+                Console.WriteLine("1.Try again");
+                Console.WriteLine("2.Create a new user");
+                Console.WriteLine("3.Exit to main menu");
+
+                choice = int.Parse(Console.ReadLine());
+
+                switch (choice)
+                {
+                    case 1:
+                        WriteUserLogin();
+                        exit = false;
+                        break;
+
+                    case 2:
+                        RenderRegisterMenu();
+                        exit = false;
+                        break;
+
+                    case 3:
+                        exit = false;
+                        break;
+                    default:
+                        Console.WriteLine("Choose the option 1-3");
+                        break;
                 }
             }
         }

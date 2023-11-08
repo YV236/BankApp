@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vinnyk_Tomkiv_Zaliczenie.Models;
+using Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagements;
 
 namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
 {
@@ -19,7 +20,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
 
             return bankList.Any(x => x.AccountNumber == accNumber);
         }
-        public BankAccount GetBankAccInfo(string Id)
+        public BankAccount GetBankAccInfo(string Id , int index)
         {
             string bankAccStr = File.ReadAllText(ConstVar.FileBankAccpath);
             var bankList = JsonConvert.DeserializeObject<List<BankAccount>>(bankAccStr);
@@ -29,19 +30,18 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
             return bank;
         }
 
-        public void AddBankAcc(BankAccount bankAccount, string login)
+        public void AddBankAcc(BankAccount bankAccount, string login, int Id)
         {
             string bankAccStr = File.ReadAllText(ConstVar.FileBankAccpath);
 
             var bankList = JsonConvert.DeserializeObject<List<BankAccount>>(bankAccStr);
 
             bankAccount.Id = login;
+            bankAccount.BankAccountIndex = Id;
 
             bankList.Add(bankAccount);
 
             File.WriteAllText(ConstVar.FileBankAccpath, JsonConvert.SerializeObject(bankList));
-
-            AddToUserBankAccList(bankAccount, bankAccount.Id);
         }
 
         public void AddToUserBankAccList(BankAccount bankAccount, string Id)
@@ -63,7 +63,13 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
             {
                 Console.WriteLine("User not found with the specified Login.");
             }
+            int index = 0;
+            for(index = 0; index < user.Accounts.Count;)
+            {
+                index++;
+            }
 
+            AddBankAcc(bankAccount, bankAccount.Id,index);
         }
 
         public BankAccount BankAccReg()
@@ -86,6 +92,15 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
             BankAccount bankAccount = new BankAccount { AccountNumber = accNumber.ToString(), Balance = 0 };
             return bankAccount;
         }
+
+        public void ChangeBankAccount(int accnum, string login)
+        {
+
+            BankAccount bankAccount = GetBankAccInfo(login,accnum);
+
+            bankAccount.BankAccountIndex = accnum;
+        }
+
 
         public virtual void Deposit(double amount)
         {

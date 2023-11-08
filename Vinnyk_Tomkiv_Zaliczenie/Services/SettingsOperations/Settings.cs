@@ -20,7 +20,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
             _userManagement = new UserManagement();
         }
 
-        public void SettingsMenu(string login)
+        public void SettingsMenu(string login, int bankAccId)
         {
             int choice;
             bool exit = true;
@@ -46,7 +46,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
 
                     case 2:
                         BankAccount bankAccount = _bankAccountManagement.BankAccReg();
-                        _bankAccountManagement.AddBankAcc(bankAccount, login);
+                        _bankAccountManagement.AddToUserBankAccList(bankAccount, login);
                         break;
 
                     case 3:
@@ -67,15 +67,34 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
         public void ShowBankAccounts(string login)
         {
             Console.Clear();
+            BankAccount bankAccount=_bankAccountManagement.GetBankAccInfo(login,0);
             User user = _userManagement.GetUserInfo(login);
 
             for (int i = 0; i < user.Accounts.Count; i++)
             {
                 BankAccount account = user.Accounts[i];
-                Console.Write($"{i+1}.Account num: ");
-                Console.WriteLine(account.AccountNumber);
-                Console.Write("Balance: ");
-                Console.WriteLine(account.Balance);
+                Console.Write($"{i + 1}.Account num: ");
+                Console.Write(account.AccountNumber);
+                Console.Write("; Balance: ");
+                Console.WriteLine(account.Balance + "\n");
+            }
+
+            Console.WriteLine("Please choose the account");
+            int accnum = int.Parse(Console.ReadLine());
+
+            if (accnum > 0 && accnum <= user.Accounts.Count)
+            {
+                bankAccount.BankAccountIndex = accnum - 1; // Встановлення активного рахунку
+
+                // Ініціалізуємо _bankAccountManagement і викликаємо метод ChangeBankAccount
+                BankAccountManagement _bankAccountManagement = new BankAccountManagement(); // Припустимо, що це правильний клас
+                _bankAccountManagement.ChangeBankAccount(accnum, login);
+
+                Console.WriteLine("You have switched to account number: " + user.Accounts[bankAccount.BankAccountIndex].AccountNumber);
+            }
+            else
+            {
+                Console.WriteLine("Invalid account number selection");
             }
         }
     }
