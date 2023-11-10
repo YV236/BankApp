@@ -25,7 +25,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
             string bankAccStr = File.ReadAllText(ConstVar.FileBankAccpath);
             var bankList = JsonConvert.DeserializeObject<List<BankAccount>>(bankAccStr);
 
-            BankAccount bank = bankList.FirstOrDefault(x => x.Id == Id);
+            BankAccount bank = bankList.FirstOrDefault(x => x.Id == Id && x.BankAccountIndex == index);
 
             return bank;
         }

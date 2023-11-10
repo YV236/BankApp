@@ -20,7 +20,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
             _userManagement = new UserManagement();
         }
 
-        public void SettingsMenu(string login, int bankAccId)
+        public void SettingsMenu(string login, int index)
         {
             int choice;
             bool exit = true;
@@ -67,7 +67,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
         public void ShowBankAccounts(string login)
         {
             Console.Clear();
-            BankAccount bankAccount=_bankAccountManagement.GetBankAccInfo(login,0);
+            BankAccount bankAccount = _bankAccountManagement.GetBankAccInfo(login, 0);
             User user = _userManagement.GetUserInfo(login);
 
             for (int i = 0; i < user.Accounts.Count; i++)
@@ -80,17 +80,16 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
             }
 
             Console.WriteLine("Please choose the account");
-            int accnum = int.Parse(Console.ReadLine());
+            int index = int.Parse(Console.ReadLine());
 
-            if (accnum > 0 && accnum <= user.Accounts.Count)
+            if (index > 0 && index <= user.Accounts.Count)
             {
-                bankAccount.BankAccountIndex = accnum - 1; // Встановлення активного рахунку
+                bankAccount = _bankAccountManagement.GetBankAccInfo(login, index);
 
-                // Ініціалізуємо _bankAccountManagement і викликаємо метод ChangeBankAccount
-                BankAccountManagement _bankAccountManagement = new BankAccountManagement(); // Припустимо, що це правильний клас
-                _bankAccountManagement.ChangeBankAccount(accnum, login);
+                //_bankAccountManagement.ChangeBankAccount(accnum,login);
 
-                Console.WriteLine("You have switched to account number: " + user.Accounts[bankAccount.BankAccountIndex].AccountNumber);
+                Console.WriteLine("You have switched to account number: " + bankAccount.AccountNumber);
+
             }
             else
             {

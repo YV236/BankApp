@@ -122,6 +122,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
         {
             string logLogin = string.Empty;
             string logPassword = string.Empty;
+            int index = 1;
 
             bool log = true;
 
@@ -172,7 +173,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             }
             if(i < 6)
             {
-                UserLoginedMenu(logLogin);
+                UserLoginedMenu(logLogin, index);
             }
             else
             {
@@ -194,14 +195,14 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             Console.ReadKey();
         }
 
-        private void UserLoginedMenu(string login)
+        private void UserLoginedMenu(string login, int index)
         {
             int choice;
             bool exit = true;
             Settings settings = new Settings();
 
             BankAccount bankAccount = new BankAccount();
-            bankAccount.BankAccountIndex = 0;
+            bankAccount.BankAccountIndex = index;
 
             while (exit)
             {
