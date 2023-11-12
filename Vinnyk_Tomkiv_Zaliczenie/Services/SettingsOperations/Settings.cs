@@ -28,8 +28,9 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
             int choice;
             bool exit = true;
 
-            while(exit)
+            while (exit)
             {
+
                 Console.Clear();
                 Console.WriteLine("What would you like to do");
                 Console.WriteLine("1.Change bank account");
@@ -74,7 +75,6 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
                         Console.WriteLine("Error try another option 1-5.");
                         Console.ReadKey();
                         break;
-
                 }
             }
         }
@@ -97,6 +97,9 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
             Console.WriteLine("Please choose the account");
             int index = int.Parse(Console.ReadLine());
 
+            //bankAccount.AccountNumber = user.Accounts[index].AccountNumber;
+
+
             if (index > 0 && index <= user.Accounts.Count)
             {
                 bankAccount = _bankAccountManagement.GetBankAccInfo(login, index);
@@ -107,8 +110,8 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
 
                 Console.ReadKey();
 
-                _menu.UserLoginedMenu(login, index);
-
+               _menu.UserLoginedMenu(login, index);
+                
             }
             else
             {
