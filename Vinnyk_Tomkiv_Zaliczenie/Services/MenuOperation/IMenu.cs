@@ -10,5 +10,6 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
     public interface IMenu
     {
         void Menu();
+        void UserLoginedMenu(string login, int index);
     }
 }

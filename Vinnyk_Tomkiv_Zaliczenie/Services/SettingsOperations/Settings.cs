@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Vinnyk_Tomkiv_Zaliczenie.Models;
 using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement;
 using Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagements;
+using Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation;
 
 namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
 {
@@ -13,19 +14,20 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
     {
         private readonly IBankAccountManagement _bankAccountManagement;
         private readonly IUserManagement _userManagement;
+        private readonly IMenu _menu;
 
         public Settings()
         {
             _bankAccountManagement = new BankAccountManagement();
             _userManagement = new UserManagement();
+            _menu = new MenuManagement();
         }
 
         public void SettingsMenu(string login, int index)
         {
             int choice;
             bool exit = true;
-
-            while (exit)
+            while(exit)
             {
                 Console.Clear();
                 Console.WriteLine("What would you like to do");
@@ -41,25 +43,38 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
                 {
                     case 1:
                         ShowBankAccounts(login);
-                        Console.ReadKey();
+                        exit = false;
                         break;
 
                     case 2:
                         BankAccount bankAccount = _bankAccountManagement.BankAccReg();
                         _bankAccountManagement.AddToUserBankAccList(bankAccount, login);
+                        Console.WriteLine("New Bank account have been added");
+                        Console.ReadKey();
                         break;
 
                     case 3:
                         Console.WriteLine("Bank acc removed");
+                        Console.ReadKey();
+                        exit = false;
                         break;
 
                     case 4:
                         Console.WriteLine("User removed");
+                        Console.ReadKey();
+                        exit = false;
                         break;
 
                     case 5:
+                        _menu.UserLoginedMenu(login, index);
                         exit = false;
                         break;
+
+                    default:
+                        Console.WriteLine("Error try another option 1-5.");
+                        Console.ReadKey();
+                        break;
+
                 }
             }
         }
@@ -89,6 +104,10 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
                 //_bankAccountManagement.ChangeBankAccount(accnum,login);
 
                 Console.WriteLine("You have switched to account number: " + bankAccount.AccountNumber);
+
+                Console.ReadKey();
+
+                _menu.UserLoginedMenu(login, index);
 
             }
             else

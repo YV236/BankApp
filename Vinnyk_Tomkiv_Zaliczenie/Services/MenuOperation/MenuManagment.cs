@@ -195,7 +195,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             Console.ReadKey();
         }
 
-        private void UserLoginedMenu(string login, int index)
+        public void UserLoginedMenu(string login, int index)
         {
             int choice;
             bool exit = true;
@@ -224,6 +224,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
 
                     case 2:
                         settings.SettingsMenu(login, bankAccount.BankAccountIndex);
+                        exit = false;
                         break;
 
                     case 3:
