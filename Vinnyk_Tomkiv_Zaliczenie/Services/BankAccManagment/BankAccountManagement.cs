@@ -99,24 +99,47 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
             BankAccount bankAccount = GetBankAccInfo(login,accnum);
 
             bankAccount.BankAccountIndex = accnum;
+            
         }
 
-
-        public virtual void Deposit(double amount)
+        public void DepositToBankAccList(string login, int index, double amount)
         {
+            string userListStr = File.ReadAllText(ConstVar.FileUserpath);
 
+            var userList = JsonConvert.DeserializeObject<List<User>>(userListStr);
 
+            User user = userList.FirstOrDefault(x => x.Login == login);
+
+            if (user != null)
+            {
+                if (index >= 0 && index < user.Accounts.Count)
+                {
+                    BankAccount selectedAccount = user.Accounts[index - 1];
+                    selectedAccount.Balance += amount;
+
+                    File.WriteAllText(ConstVar.FileUserpath, JsonConvert.SerializeObject(userList));
+
+                    Console.WriteLine($"Deposited {amount} PLN to account {selectedAccount.AccountNumber}. New balance: {selectedAccount.Balance} PLN");
+                }
+            }
         }
 
-        public virtual void Withdraw(double amount)
+        public virtual void Deposit(string login, int index, double amount) 
         {
+            string bankAccStr = File.ReadAllText(ConstVar.FileBankAccpath);
+            var bankList = JsonConvert.DeserializeObject<List<BankAccount>>(bankAccStr);
 
+            BankAccount bank = bankList.FirstOrDefault(x => x.Id == login && x.BankAccountIndex == index);
 
+            bank.Balance += amount;
+
+            File.WriteAllText(ConstVar.FileBankAccpath, JsonConvert.SerializeObject(bankList));
+
+            DepositToBankAccList(login, index, amount);
         }
-        public virtual void Transfer(BankAccount targetAccount, double amount)
-        {
 
+        public virtual void Withdraw(double amount) { }
 
-        }
+        public virtual void Transfer(BankAccount targetAccount, double amount) { }
     }
 }

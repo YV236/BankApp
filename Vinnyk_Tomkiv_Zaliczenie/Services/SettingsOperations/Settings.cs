@@ -101,7 +101,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
             {
                 bankAccount = _bankAccountManagement.GetBankAccInfo(login, index);
 
-                //_bankAccountManagement.ChangeBankAccount(accnum,login);
+                //_bankAccountManagement.ChangeBankAccount(index,login);
 
                 Console.WriteLine("You have switched to account number: " + bankAccount.AccountNumber);
 

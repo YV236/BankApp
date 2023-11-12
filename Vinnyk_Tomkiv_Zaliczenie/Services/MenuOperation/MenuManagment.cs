@@ -34,7 +34,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                 Console.Clear();
                 Console.WriteLine("Welcome to PolyBank Application\nPlease enter your choice\n");
                 Console.WriteLine("1.Create a new user");
-                Console.WriteLine("2.Login as a user");
+                Console.WriteLine("2.Log in to user");
                 Console.WriteLine("3.Exit Program");
                 choice = int.Parse(Console.ReadLine());
 
@@ -204,6 +204,8 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             BankAccount bankAccount = new BankAccount();
             bankAccount.BankAccountIndex = index;
 
+            BasicAccountOperations accountOperations = new BasicAccountOperations();
+
             while (exit)
             {
                 Console.Clear();
@@ -212,7 +214,8 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                 Console.WriteLine("Choose the option 1-3");
                 Console.WriteLine("1.Show bank account details");
                 Console.WriteLine("2.Options");
-                Console.WriteLine("3.Exit to main menu");
+                Console.WriteLine("3.Operations");
+                Console.WriteLine("4.Exit to main menu");
 
                 choice = int.Parse(Console.ReadLine());
 
@@ -228,6 +231,10 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                         break;
 
                     case 3:
+                        accountOperations.OperationsMenu(login, bankAccount.BankAccountIndex);
+                        break;
+
+                    case 4:
                         exit = false;
                         break;
 
@@ -238,6 +245,8 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                 }
             }
         }
+
+       
 
         private void GivePropose()
         {

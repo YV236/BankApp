@@ -13,12 +13,62 @@ namespace Vinnyk_Tomkiv_Zaliczenie
     // Клас для рахунку зберігання
     public class BasicAccountOperations : BankAccountManagement
     {
-        // Реалізація методів IAccountOperations для рахунку зберігання
+        public void OperationsMenu(string login, int index)
+        {
+            int choice;
+
+            Console.Clear();
+
+            Console.WriteLine("1.Deposit");
+            Console.WriteLine("2.Withdraw");
+            Console.WriteLine("3.Transfer to another user");
+            Console.WriteLine("4.Exit to menu");
+
+            choice = int.Parse(Console.ReadLine());
+
+            switch (choice)
+            {
+                case 1:
+                    Deposit(login, index, 0);
+                    break;
+
+                case 2:
+                    Console.WriteLine("Withdraw");
+                    break;
+
+                case 3:
+                    Console.WriteLine("Transfer");
+                    break;
+
+                case 4:
+                    break;
+            }
+        }
 
         // Логіка внесення грошей на рахунок зберігання
-        public override void Deposit(double amount)
+        public override void Deposit(string login, int index, double amount)
         {
+            BankAccountManagement bankAccountManagement = new BankAccountManagement();
 
+
+            while (true)
+            {
+                Console.Clear();
+
+                Console.Write("How much do you want deposit to your account: ");
+
+                if (double.TryParse(Console.ReadLine(), out amount) && amount > 0)
+                {
+                    bankAccountManagement.Deposit(login, index, amount);
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Please write how much do you want deposit to your account");
+                    Console.ReadKey();
+                }
+            }
+            Console.ReadKey();
 
         }
 
