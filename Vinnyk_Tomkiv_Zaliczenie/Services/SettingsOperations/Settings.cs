@@ -27,6 +27,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
         {
             int choice;
             bool exit = true;
+
             while(exit)
             {
                 Console.Clear();
@@ -66,7 +67,6 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
                         break;
 
                     case 5:
-                        _menu.UserLoginedMenu(login, index);
                         exit = false;
                         break;
 

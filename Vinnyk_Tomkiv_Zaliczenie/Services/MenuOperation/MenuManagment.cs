@@ -227,7 +227,6 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
 
                     case 2:
                         settings.SettingsMenu(login, bankAccount.BankAccountIndex);
-                        exit = false;
                         break;
 
                     case 3:

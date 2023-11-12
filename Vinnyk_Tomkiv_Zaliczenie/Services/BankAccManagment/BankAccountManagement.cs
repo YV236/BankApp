@@ -112,15 +112,12 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
 
             if (user != null)
             {
-                if (index >= 0 && index < user.Accounts.Count)
-                {
-                    BankAccount selectedAccount = user.Accounts[index - 1];
-                    selectedAccount.Balance += amount;
+                BankAccount selectedAccount = user.Accounts[index - 1];
+                selectedAccount.Balance += amount;
 
-                    File.WriteAllText(ConstVar.FileUserpath, JsonConvert.SerializeObject(userList));
+                File.WriteAllText(ConstVar.FileUserpath, JsonConvert.SerializeObject(userList));
 
-                    Console.WriteLine($"Deposited {amount} PLN to account {selectedAccount.AccountNumber}. New balance: {selectedAccount.Balance} PLN");
-                }
+                Console.WriteLine($"Deposited {amount} PLN to account {selectedAccount.AccountNumber}. New balance: {selectedAccount.Balance} PLN");
             }
         }
 
