@@ -50,7 +50,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
 
                     case 2:
                         BankAccount bankAccount = _bankAccountManagement.BankAccReg();
-                        _bankAccountManagement.AddToUserBankAccList(bankAccount, login);
+                        _bankAccountManagement.AddBankAcc(bankAccount, login);
                         Console.WriteLine("New Bank account have been added");
                         Console.ReadKey();
                         break;
@@ -82,7 +82,6 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
         public void ShowBankAccounts(string login)
         {
             Console.Clear();
-            BankAccount bankAccount = _bankAccountManagement.GetBankAccInfo(login, 0);
             User user = _userManagement.GetUserInfo(login);
 
             for (int i = 0; i < user.Accounts.Count; i++)
@@ -97,20 +96,20 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
             Console.WriteLine("Please choose the account");
             int index = int.Parse(Console.ReadLine());
 
-            //bankAccount.AccountNumber = user.Accounts[index].AccountNumber;
+            int accNum = int.Parse(user.Accounts[index - 1].AccountNumber);
 
 
             if (index > 0 && index <= user.Accounts.Count)
             {
-                bankAccount = _bankAccountManagement.GetBankAccInfo(login, index);
+                BankAccount bankAccount = _bankAccountManagement.GetBankAccInfo(login, accNum);
 
                 //_bankAccountManagement.ChangeBankAccount(index,login);
 
-                Console.WriteLine("You have switched to account number: " + bankAccount.AccountNumber);
+                Console.WriteLine("You have switched to account number: " + accNum);
 
                 Console.ReadKey();
 
-               _menu.UserLoginedMenu(login, index);
+               _menu.UserLoginedMenu(login, index - 1);
                 
             }
             else

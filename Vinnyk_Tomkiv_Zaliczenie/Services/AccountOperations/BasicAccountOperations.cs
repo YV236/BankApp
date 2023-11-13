@@ -13,7 +13,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie
     // Клас для рахунку зберігання
     public class BasicAccountOperations : BankAccountManagement
     {
-        public void OperationsMenu(string login, int index)
+        public void OperationsMenu(string login, int accNum)
         {
             int choice;
 
@@ -29,7 +29,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie
             switch (choice)
             {
                 case 1:
-                    Deposit(login, index, 0);
+                    Deposit(login, accNum, 0);
                     break;
 
                 case 2:
@@ -46,10 +46,9 @@ namespace Vinnyk_Tomkiv_Zaliczenie
         }
 
         // Логіка внесення грошей на рахунок зберігання
-        public override void Deposit(string login, int index, double amount)
+        public override void Deposit(string login, int accNum, double amount)
         {
             BankAccountManagement bankAccountManagement = new BankAccountManagement();
-
 
             while (true)
             {
@@ -59,7 +58,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie
 
                 if (double.TryParse(Console.ReadLine(), out amount) && amount > 0)
                 {
-                    bankAccountManagement.Deposit(login, index, amount);
+                    bankAccountManagement.Deposit(login, accNum, amount);
                     break;
                 }
                 else

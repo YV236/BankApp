@@ -25,7 +25,6 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
 
         public void Menu()
         {
-            User customer = new User();
             int choice;
             bool exit = true;
 
@@ -109,9 +108,10 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             User customer = new User { Login = login, Password = password };
             _userManagement.AddUser(customer);
 
+            //BankAccount bankAccount = _bankAccountManagement.BankAccReg();
+            //_bankAccountManagement.AddToUserBankAccList(bankAccount, customer.Login);
             BankAccount bankAccount = _bankAccountManagement.BankAccReg();
-
-            _bankAccountManagement.AddToUserBankAccList(bankAccount, customer.Login);
+            _bankAccountManagement.AddBankAcc(bankAccount, customer.Login);
 
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();
@@ -121,7 +121,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
         {
             string logLogin = string.Empty;
             string logPassword = string.Empty;
-            int index = 1;
+            int index = 0;
 
             bool log = true;
 
@@ -180,12 +180,12 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             }
         }
 
-        private void ShowUserInfo(string login, int index)
+        private void ShowUserInfo(string login, int accNum)
         {
             Console.Clear();
 
             User user = _userManagement.GetUserInfo(login);
-            BankAccount account = _bankAccountManagement.GetBankAccInfo(login,index);
+            BankAccount account = _bankAccountManagement.GetBankAccInfo(login, accNum);
 
             Console.WriteLine("Bank account info");
             Console.WriteLine($"Login: {user.Login}");
@@ -198,10 +198,12 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
         {
             int choice;
             bool exit = true;
+
+            User user = _userManagement.GetUserInfo(login);
             Settings settings = new Settings();
 
             BankAccount bankAccount = new BankAccount();
-            bankAccount.BankAccountIndex = index;
+            bankAccount.AccountNumber = user.Accounts[index].AccountNumber;
 
             BasicAccountOperations accountOperations = new BasicAccountOperations();
 
@@ -221,16 +223,16 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                 switch (choice)
                 {
                     case 1:
-                        ShowUserInfo(login, bankAccount.BankAccountIndex);
+                        ShowUserInfo(login, int.Parse(bankAccount.AccountNumber));
                             break;
 
                     case 2:
-                        settings.SettingsMenu(login, bankAccount.BankAccountIndex);
+                        settings.SettingsMenu(login, int.Parse(bankAccount.AccountNumber));
                         exit = false;
                         break;
 
                     case 3:
-                        accountOperations.OperationsMenu(login, bankAccount.BankAccountIndex);
+                        accountOperations.OperationsMenu(login, int.Parse(bankAccount.AccountNumber));
                         break;
 
                     case 4:

@@ -13,8 +13,8 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
         bool IsBankAccExist(string accNumber);
         void AddToUserBankAccList(BankAccount bankAccount, string Id);
         BankAccount BankAccReg();
-        void AddBankAcc(BankAccount bankAccount, string login, int Id);
+        void AddBankAcc(BankAccount bankAccount, string login);
         BankAccount GetBankAccInfo(string Id, int index);
-        void ChangeBankAccount(int accnum, string login);
+        //void ChangeBankAccount(int accnum, string login);
     }
 }
