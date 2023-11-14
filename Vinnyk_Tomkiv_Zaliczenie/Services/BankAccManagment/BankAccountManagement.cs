@@ -173,7 +173,38 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
             DepositToBankAccList(login, accNum, amount);
         }
 
-        public virtual void Withdraw(double amount) { }
+        public void WithdrawFromBankAccList(string login, int accNum, double amount)
+        {
+            string userListStr = File.ReadAllText(ConstVar.FileUserpath);
+
+            var userList = JsonConvert.DeserializeObject<List<User>>(userListStr);
+
+            User user = userList.FirstOrDefault(x => x.Login == login);
+
+            if (user != null)
+            {
+                BankAccount selectedAccount = user.Accounts.FirstOrDefault(x => x.AccountNumber == accNum.ToString());
+                selectedAccount.Balance -= amount;
+
+                File.WriteAllText(ConstVar.FileUserpath, JsonConvert.SerializeObject(userList));
+
+                Console.WriteLine($"Withdrawed {amount} PLN from account {selectedAccount.AccountNumber}. New balance: {selectedAccount.Balance} PLN");
+            }
+        }
+
+        public virtual void Withdraw(string login, int accNum, double amount)
+        {
+            string bankAccStr = File.ReadAllText(ConstVar.FileBankAccpath);
+            var bankList = JsonConvert.DeserializeObject<List<BankAccount>>(bankAccStr);
+
+            BankAccount bank = bankList.FirstOrDefault(x => x.Id == login && x.AccountNumber == accNum.ToString());
+
+            bank.Balance -= amount;
+
+            File.WriteAllText(ConstVar.FileBankAccpath, JsonConvert.SerializeObject(bankList));
+
+            WithdrawFromBankAccList(login, accNum, amount);
+        }
 
         public virtual void Transfer(BankAccount targetAccount, double amount) { }
     }

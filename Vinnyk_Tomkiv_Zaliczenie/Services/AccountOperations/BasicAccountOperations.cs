@@ -33,7 +33,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie
                     break;
 
                 case 2:
-                    Console.WriteLine("Withdraw");
+                    Withdraw(login, accNum, 0);
                     break;
 
                 case 3:
@@ -72,9 +72,36 @@ namespace Vinnyk_Tomkiv_Zaliczenie
         }
 
         // Логіка зняття грошей з рахунку зберігання
-        public override void Withdraw(double amount)
+        public override void Withdraw(string login, int accNum, double amount)
         {
+            BankAccountManagement bankAccountManagement = new BankAccountManagement();
+            BankAccount account = bankAccountManagement.GetBankAccInfo(login, accNum);
 
+            while (true)
+            {
+                Console.Clear();
+
+                Console.Write("How much do you want Withdraw from your account: ");
+
+                if (double.TryParse(Console.ReadLine(), out amount) && amount > 0)
+                {
+                    if(amount< account.Balance)
+                    {
+                        bankAccountManagement.Withdraw(login, accNum, amount);
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("There are not enough funds in your balance to withdraw");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Please write how much do you want Withdraw from your account");
+                    Console.ReadKey();
+                }
+            }
+            Console.ReadKey();
 
         }
 

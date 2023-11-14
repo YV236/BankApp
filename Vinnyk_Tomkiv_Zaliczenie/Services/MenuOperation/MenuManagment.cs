@@ -211,7 +211,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             {
                 Console.Clear();
 
-                Console.WriteLine("You loginned successfully, welcome: " + login + "\n");
+                Console.WriteLine("You logged successfully, welcome: " + login + "\n");
                 Console.WriteLine("Choose the option 1-3");
                 Console.WriteLine("1.Show bank account details");
                 Console.WriteLine("2.Options");
@@ -227,7 +227,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                             break;
 
                     case 2:
-                        settings.SettingsMenu(login, int.Parse(bankAccount.AccountNumber));
+                        settings.SettingsMenu(login, index);
                         exit = false;
                         break;
 

@@ -69,6 +69,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
 
                     case 5:
                         exit = false;
+                        _menu.UserLoginedMenu(login, index);
                         break;
 
                     default:
@@ -77,6 +78,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
                         break;
                 }
             }
+
         }
 
         public void ShowBankAccounts(string login)
