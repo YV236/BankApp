@@ -1,36 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Vinnyk_Tomkiv_Zaliczenie.Models;
-using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement;
+using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment;
 using Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagements;
 using Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation;
+using Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations;
 
-namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
+namespace Vinnyk_Tomkiv_Zaliczenie.Services.SettingsOperations
 {
-    public class Settings : ISettings
+    public class Settings : MenuScreen
     {
         private readonly IBankAccountManagement _bankAccountManagement;
         private readonly IUserManagement _userManagement;
-        private readonly Storage _storage;
 
-        public Settings(Storage storage)
+        public Settings(Storage storage) : base(storage)
         {
             _bankAccountManagement = new BankAccountManagement();
             _userManagement = new UserManagement();
-            _storage = storage;
         }
 
-        public void SettingsMenu()
+        public override void Menu()
         {
-            int choice;
             bool exit = true;
 
             while (exit)
             {
-
                 Console.Clear();
                 Console.WriteLine("What would you like to do");
                 Console.WriteLine("1.Change bank account");
@@ -39,7 +32,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
                 Console.WriteLine("4.Remove user");
                 Console.WriteLine("5.Exit settings");
 
-                choice = int.Parse(Console.ReadLine());
+                var choice = int.Parse(Console.ReadLine());
 
                 switch (choice)
                 {
@@ -49,8 +42,10 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
                         break;
 
                     case 2:
-                        BankAccount bankAccount = _bankAccountManagement.BankAccReg();
-                        _bankAccountManagement.AddBankAcc(bankAccount, _storage.User.Login);
+                        var storageUser = Storage.User;
+                        _bankAccountManagement.CreateNewBankAccount(ref storageUser);
+                        Storage.User = storageUser;
+                        
                         Console.WriteLine("New Bank account have been added");
                         Console.ReadKey();
                         break;
@@ -81,7 +76,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
         public void ShowBankAccounts()
         {
             Console.Clear();
-            User user = _storage.User;
+            User user = Storage.User;
 
             for (int i = 0; i < user.Accounts.Count; i++)
             {
@@ -97,16 +92,12 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
 
             if (index > 0 && index <= user.Accounts.Count)
             {
-                int accNum = int.Parse(user.Accounts[index - 1].AccountNumber);
-
-                BankAccount bankAccount = _bankAccountManagement.GetBankAccInfo(user.Login, accNum);
-
-                //_bankAccountManagement.ChangeBankAccount(index,login);
-
-                Console.WriteLine("You have switched to account number: " + accNum);
+                var account = user.Accounts[index - 1];
+                
+                Console.WriteLine("You have switched to account number: " + account.AccountNumber);
 
                 Console.ReadKey();
-                _storage.BankAccount = bankAccount;
+                Storage.BankAccount = account;
                 
             }
             else

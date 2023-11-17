@@ -1,32 +1,26 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Vinnyk_Tomkiv_Zaliczenie;
 using Vinnyk_Tomkiv_Zaliczenie.Models;
-using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement;
+using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment;
 using Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagements;
-using Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation;
 
-namespace Vinnyk_Tomkiv_Zaliczenie
+namespace Vinnyk_Tomkiv_Zaliczenie.Services.AccountOperations
 {
     // Клас для рахунку зберігання
-    public class BasicAccountOperations : BankAccountManagement
+    public class BasicAccountOperations
     {
         private readonly IBankAccountManagement _bankAccountManagement;
         private readonly IUserManagement _userManagement;
+        private readonly Storage _storage;
 
-        public BasicAccountOperations()
+        public BasicAccountOperations(Storage storage)
         {
+            _storage = storage;
             _bankAccountManagement = new BankAccountManagement();
             _userManagement = new UserManagement();
         }
-        public void OperationsMenu(string login, int accNum)
-        {
-            int choice;
 
+        public void OperationsMenu()
+        {
             Console.Clear();
 
             Console.WriteLine("1.Deposit");
@@ -34,16 +28,16 @@ namespace Vinnyk_Tomkiv_Zaliczenie
             Console.WriteLine("3.Transfer to another user");
             Console.WriteLine("4.Exit to menu");
 
-            choice = int.Parse(Console.ReadLine());
+            var choice = int.Parse(Console.ReadLine());
 
             switch (choice)
             {
                 case 1:
-                    Deposit(login, accNum, 0);
+                    Deposit();
                     break;
 
                 case 2:
-                    Withdraw(login, accNum, 0);
+                    Withdraw(_storage.BankAccount.AccountNumber);
                     break;
 
                 case 3:
@@ -56,36 +50,37 @@ namespace Vinnyk_Tomkiv_Zaliczenie
         }
 
         // Логіка внесення грошей на рахунок зберігання
-        public override void Deposit(string login, int accNum, double amount)
+        private void Deposit()
         {
-            BankAccountManagement bankAccountManagement = new BankAccountManagement();
-
             while (true)
             {
                 Console.Clear();
 
                 Console.Write("How much do you want deposit to your account: ");
 
-                if (double.TryParse(Console.ReadLine(), out amount) && amount > 0)
+                if (double.TryParse(Console.ReadLine(), out double amount) && amount > 0)
                 {
-                    bankAccountManagement.Deposit(login, accNum, amount);
+                    var userTemp = _storage.User;
+                    var bankAccountTemp = _storage.BankAccount;
+                    _bankAccountManagement.Deposit(ref userTemp, ref bankAccountTemp, amount);
+
+                    _storage.User = userTemp;
+                    _storage.BankAccount = bankAccountTemp;
+
                     break;
                 }
-                else
-                {
-                    Console.WriteLine("Please write how much do you want deposit to your account");
-                    Console.ReadKey();
-                }
-            }
-            Console.ReadKey();
 
+                Console.WriteLine("Please write how much do you want deposit to your account");
+                Console.ReadKey();
+            }
+
+            Console.ReadKey();
         }
 
         // Логіка зняття грошей з рахунку зберігання
-        public override void Withdraw(string login, int accNum, double amount)
+        private void Withdraw(string accNum)
         {
-            BankAccountManagement bankAccountManagement = new BankAccountManagement();
-            BankAccount account = bankAccountManagement.GetBankAccInfo(login, accNum);
+            BankAccount account = _storage.BankAccount;
 
             while (true)
             {
@@ -93,17 +88,21 @@ namespace Vinnyk_Tomkiv_Zaliczenie
 
                 Console.Write("How much do you want Withdraw from your account: ");
 
-                if (double.TryParse(Console.ReadLine(), out amount) && amount > 0)
+                if (double.TryParse(Console.ReadLine(), out double amount) && amount > 0)
                 {
-                    if(amount< account.Balance)
+                    if (amount < account.Balance)
                     {
-                        bankAccountManagement.Withdraw(login, accNum, amount);
+                        var userTemp = _storage.User;
+                        var bankAccountTemp = _storage.BankAccount;
+                        _bankAccountManagement.Withdraw(ref userTemp, ref bankAccountTemp, amount);
+
+                        _storage.User = userTemp;
+                        _storage.BankAccount = bankAccountTemp;
+                        
                         break;
                     }
-                    else
-                    {
-                        Console.WriteLine("There are not enough funds in your balance to withdraw");
-                    }
+
+                    Console.WriteLine("There are not enough funds in your balance to withdraw");
                 }
                 else
                 {
@@ -111,15 +110,15 @@ namespace Vinnyk_Tomkiv_Zaliczenie
                     Console.ReadKey();
                 }
             }
-            Console.ReadKey();
 
+            Console.ReadKey();
         }
 
         // Логіка переказу з рахунку зберігання на інший рахунок
-        public override void Transfer(BankAccount targetAccount, BankAccount bankAccount, double amount)
+        public void Transfer(BankAccount targetAccount, BankAccount bankAccount, double amount)
         {
             Console.Clear();
-            string login = targetAccount.Id;
+            string login = targetAccount.UserLogin;
             User user = _userManagement.GetUserInfo(login);
 
             for (int i = 0; i < user.Accounts.Count; i++)
@@ -135,5 +134,4 @@ namespace Vinnyk_Tomkiv_Zaliczenie
             int index = int.Parse(Console.ReadLine());
         }
     }
-
 }

@@ -1,104 +1,33 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Vinnyk_Tomkiv_Zaliczenie.Models;
 using Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagements;
 
-namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
+namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment
 {
     public class BankAccountManagement : IBankAccountManagement
     {
-        public bool IsBankAccExist(string accNumber)
+        private readonly IUserManagement _userManagement;
+
+        public BankAccountManagement()
         {
-            string bankAccStr = File.ReadAllText(ConstVar.FileBankAccpath);
-
-            var bankList = JsonConvert.DeserializeObject<List<BankAccount>>(bankAccStr);
-
-            return bankList.Any(x => x.AccountNumber == accNumber);
+            _userManagement = new UserManagement();
         }
 
-        public BankAccount GetBankAccInfo(string Id , int accNum)
-        {
-            string bankAccStr = File.ReadAllText(ConstVar.FileBankAccpath);
-            var bankList = JsonConvert.DeserializeObject<List<BankAccount>>(bankAccStr);
-
-            BankAccount bank = bankList.FirstOrDefault(x => x.Id == Id && x.AccountNumber == accNum.ToString());
-
-            return bank;
-        }
-
-        //public void AddBankAcc(BankAccount bankAccount, string login, int accNum)
-        //{
-        //    string bankAccStr = File.ReadAllText(ConstVar.FileBankAccpath);
-
-        //    var bankList = JsonConvert.DeserializeObject<List<BankAccount>>(bankAccStr);
-
-        //    bankAccount.Id = login;
-        //    bankAccount.AccountNumber = accNum.ToString();
-
-        //    bankList.Add(bankAccount);
-
-        //    File.WriteAllText(ConstVar.FileBankAccpath, JsonConvert.SerializeObject(bankList));
-        //}
-
-        public void AddBankAcc(BankAccount bankAccount, string login)
-        {
-            string bankAccStr = File.ReadAllText(ConstVar.FileBankAccpath);
-
-            var bankList = JsonConvert.DeserializeObject<List<BankAccount>>(bankAccStr);
-
-            bankAccount.Id = login;
-
-            bankList.Add(bankAccount);
-
-            File.WriteAllText(ConstVar.FileBankAccpath, JsonConvert.SerializeObject(bankList));
-
-            AddToUserBankAccList(bankAccount, bankAccount.Id);
-        }
-
-        //public void AddToUserBankAccList(BankAccount bankAccount, string Id)
-        //{
-        //    string userListStr = File.ReadAllText(ConstVar.FileUserpath);
-
-        //    var userList = JsonConvert.DeserializeObject<List<User>>(userListStr);
-
-        //    User user = userList.FirstOrDefault(u => u.Login == Id);
-
-        //    if (user != null)
-        //    {
-        //        bankAccount.Id = Id;
-        //        user.Accounts.Add(bankAccount);
-
-        //        File.WriteAllText(ConstVar.FileUserpath, JsonConvert.SerializeObject(userList));
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("User not found with the specified Login.");
-        //    }
-        //    int index = 0;
-        //    for(index = 0; index < user.Accounts.Count;)
-        //    {
-        //        index++;
-        //    }
-
-        //    AddBankAcc(bankAccount, bankAccount.Id,index);
-        //}
-
-        public void AddToUserBankAccList(BankAccount bankAccount, string login)
+        private void AddToUserBankAccList(BankAccount bankAccount, string userLogin)
         {
             string userListStr = File.ReadAllText(ConstVar.FileUserpath);
 
             var userList = JsonConvert.DeserializeObject<List<User>>(userListStr);
 
-            User user = userList.FirstOrDefault(u => u.Login == login);
+            User user = userList.FirstOrDefault(u => u.Login == userLogin);
 
             if (user != null)
             {
-                bankAccount.Id = login;
+                bankAccount.UserLogin = userLogin;
                 user.Accounts.Add(bankAccount);
 
                 File.WriteAllText(ConstVar.FileUserpath, JsonConvert.SerializeObject(userList));
@@ -107,10 +36,25 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
             {
                 Console.WriteLine("User not found with the specified Login.");
             }
-
         }
 
-        public BankAccount BankAccReg()
+        public BankAccount CreateNewBankAccount(ref User user)
+        {
+            var bankAccount = new BankAccount
+            {
+                AccountNumber = GenerateBankAccId(user.Accounts),
+                Balance = 0,
+                UserLogin = user.Login
+            };
+
+            AddToUserBankAccList(bankAccount, user.Login);
+
+            user = _userManagement.GetUserInfo(user.Login);
+
+            return bankAccount;
+        }
+
+        private string GenerateBankAccId(List<BankAccount> bankAccounts)
         {
             Random random = new Random();
 
@@ -121,94 +65,73 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
             {
                 accNumber = random.Next(100000000, 1000000001);
 
-                if (!IsBankAccExist(accNumber.ToString()))
+                var number = accNumber;
+                if (bankAccounts.All(x => x.AccountNumber != number.ToString()))
                 {
                     exit = false;
                 }
             }
 
-            BankAccount bankAccount = new BankAccount { AccountNumber = accNumber.ToString(), Balance = 0 };
-            return bankAccount;
+            return accNumber.ToString();
         }
 
-        //public void ChangeBankAccount(int accnum, string login)
-        //{
-
-        //    BankAccount bankAccount = GetBankAccInfo(login,accnum);
-
-        //    bankAccount.BankAccountIndex = accnum;
-            
-        //}
-
-        public void DepositToBankAccList(string login, int accNum, double amount)
+        public void Deposit(ref User user, ref BankAccount account, double amount)
         {
             string userListStr = File.ReadAllText(ConstVar.FileUserpath);
 
             var userList = JsonConvert.DeserializeObject<List<User>>(userListStr);
 
-            User user = userList.FirstOrDefault(x => x.Login == login);
+            var userLogin = user.Login;
 
-            if (user != null)
+            User userDb = userList.FirstOrDefault(x => x.Login == userLogin);
+
+            var accountNumber = account.AccountNumber;
+            var selectedAccount = userDb?.Accounts.FirstOrDefault(x => x.AccountNumber == accountNumber);
+
+            if (selectedAccount == null)
             {
-                BankAccount selectedAccount = user.Accounts.FirstOrDefault(x => x.AccountNumber == accNum.ToString());
-                selectedAccount.Balance += amount;
-
-                File.WriteAllText(ConstVar.FileUserpath, JsonConvert.SerializeObject(userList));
-
-                Console.WriteLine($"Deposited {amount} PLN to account {selectedAccount.AccountNumber}. New balance: {selectedAccount.Balance} PLN");
+                return;
             }
+
+            selectedAccount.Balance += amount;
+
+            File.WriteAllText(ConstVar.FileUserpath, JsonConvert.SerializeObject(userList));
+
+            user = userDb;
+            account = selectedAccount;
+
+            Console.WriteLine(
+                $"Deposited {amount} PLN to account {selectedAccount.AccountNumber}. New balance: {selectedAccount.Balance} PLN");
         }
 
-        public virtual void Deposit(string login, int accNum, double amount) 
-        {
-            string bankAccStr = File.ReadAllText(ConstVar.FileBankAccpath);
-            var bankList = JsonConvert.DeserializeObject<List<BankAccount>>(bankAccStr);
-
-            BankAccount bank = bankList.FirstOrDefault(x => x.Id == login && x.AccountNumber == accNum.ToString());
-
-            bank.Balance += amount;
-
-            File.WriteAllText(ConstVar.FileBankAccpath, JsonConvert.SerializeObject(bankList));
-
-            DepositToBankAccList(login, accNum, amount);
-        }
-
-        public void WithdrawFromBankAccList(string login, int accNum, double amount)
+        public void Withdraw(ref User user, ref BankAccount account, double amount)
         {
             string userListStr = File.ReadAllText(ConstVar.FileUserpath);
 
             var userList = JsonConvert.DeserializeObject<List<User>>(userListStr);
 
-            User user = userList.FirstOrDefault(x => x.Login == login);
+            var userLogin = user.Login;
 
-            if (user != null)
-            {
-                BankAccount selectedAccount = user.Accounts.FirstOrDefault(x => x.AccountNumber == accNum.ToString());
-                selectedAccount.Balance -= amount;
+            User userDb = userList.FirstOrDefault(x => x.Login == userLogin);
 
-                File.WriteAllText(ConstVar.FileUserpath, JsonConvert.SerializeObject(userList));
+            var accountNumber = account.AccountNumber;
+            BankAccount selectedAccount = userDb?.Accounts.FirstOrDefault(x => x.AccountNumber == accountNumber);
+            if (selectedAccount == null)
+                return;
 
-                Console.WriteLine($"Withdrawed {amount} PLN from account {selectedAccount.AccountNumber}. New balance: {selectedAccount.Balance} PLN");
-            }
+            selectedAccount.Balance -= amount;
+
+            File.WriteAllText(ConstVar.FileUserpath, JsonConvert.SerializeObject(userList));
+
+            user = userDb;
+            account = selectedAccount;
+
+            Console.WriteLine(
+                $"Withdrawed {amount} PLN from account {selectedAccount.AccountNumber}. New balance: {selectedAccount.Balance} PLN");
         }
 
-        public virtual void Withdraw(string login, int accNum, double amount)
+        public virtual void Transfer(BankAccount targetAccount, BankAccount bankAccount, double amount)
         {
-            string bankAccStr = File.ReadAllText(ConstVar.FileBankAccpath);
-            var bankList = JsonConvert.DeserializeObject<List<BankAccount>>(bankAccStr);
-
-            BankAccount bank = bankList.FirstOrDefault(x => x.Id == login && x.AccountNumber == accNum.ToString());
-
-            bank.Balance -= amount;
-
-            File.WriteAllText(ConstVar.FileBankAccpath, JsonConvert.SerializeObject(bankList));
-
-            WithdrawFromBankAccList(login, accNum, amount);
-        }
-
-        public virtual void Transfer(BankAccount targetAccount, BankAccount bankAccount, double amount) 
-        {
-
         }
     }
 }

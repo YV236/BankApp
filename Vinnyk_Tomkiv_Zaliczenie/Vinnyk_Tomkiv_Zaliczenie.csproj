@@ -55,8 +55,7 @@
     <Compile Include="Services\BankAccManagment\IBankAccountManagement.cs" />
     <Compile Include="Services\CustomerManagments\UserManagement.cs" />
     <Compile Include="Services\CustomerManagments\IUserManagement.cs" />
-    <Compile Include="Services\MenuOperation\IMenu.cs" />
-    <Compile Include="Services\MenuOperation\MenuManagment.cs" />
+    <Compile Include="Services\MenuOperation\MenuScreen.cs" />
     <Compile Include="Services\SettingsOperations\ISettings.cs" />
     <Compile Include="Services\SettingsOperations\Settings.cs" />
     <Compile Include="Services\TransactionManagement\ITransactionManagement.cs" />

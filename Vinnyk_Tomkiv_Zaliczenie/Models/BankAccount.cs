@@ -11,7 +11,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Models
     // Базовий клас банківського рахунку
     public class BankAccount
     {
-        public string Id { get; set; }
+        public string UserLogin { get; set; }
         public string AccountNumber { get; set; }
         public double Balance { get; set; }
 

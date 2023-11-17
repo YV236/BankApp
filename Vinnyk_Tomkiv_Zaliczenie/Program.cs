@@ -10,25 +10,20 @@ using Vinnyk_Tomkiv_Zaliczenie.Models;
 
 namespace Vinnyk_Tomkiv_Zaliczenie
 {
-    class Program
+    internal static class Program
     {
         public static void Main(string[] args)
         {
             Storage storage = new Storage();
-
-            if (!File.Exists(ConstVar.FileBankAccpath))
-            {
-                File.Create(ConstVar.FileBankAccpath).Close();
-                File.WriteAllText(ConstVar.FileBankAccpath, "[]");
-            }
 
             if (!File.Exists(ConstVar.FileUserpath))
             {
                 File.Create(ConstVar.FileUserpath).Close();
                 File.WriteAllText(ConstVar.FileUserpath, "[]");
             }
-            MenuManagement menuManagment = new MenuManagement(storage);
-            menuManagment.Menu();
+            
+            var menuManagement = new MenuScreen(storage);
+            menuManagement.Menu();
         }
     }
 
