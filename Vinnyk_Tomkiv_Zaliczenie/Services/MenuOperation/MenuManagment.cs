@@ -17,10 +17,15 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
 
         private readonly IBankAccountManagement _bankAccountManagement;
 
-        public MenuManagement() 
+        private readonly Storage _storage;
+
+        private const int MaxAttempts = 6;
+
+        public MenuManagement(Storage storage) 
         {
             _userManagement = new UserManagement();
             _bankAccountManagement = new BankAccountManagement();
+            _storage = storage;
         }
 
         public void Menu()
@@ -121,7 +126,6 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
         {
             string logLogin = string.Empty;
             string logPassword = string.Empty;
-            int index = 0;
 
             bool log = true;
 
@@ -165,14 +169,16 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                     ++i;
                 }
 
-                if (i >= 6)
+                if (i >= MaxAttempts)
                 {
                     log = false;
                 }
             }
-            if(i < 6)
+            if(i < MaxAttempts)
             {
-                UserLoginedMenu(logLogin, index);
+                User user = _userManagement.GetUserInfo(logLogin);
+                _storage.User = user;
+                UserLoginedMenu();
             }
             else
             {
@@ -180,30 +186,23 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             }
         }
 
-        private void ShowUserInfo(string login, int accNum)
+        private void ShowUserInfo()
         {
             Console.Clear();
 
-            User user = _userManagement.GetUserInfo(login);
-            BankAccount account = _bankAccountManagement.GetBankAccInfo(login, accNum);
-
             Console.WriteLine("Bank account info");
-            Console.WriteLine($"Login: {user.Login}");
-            Console.WriteLine($"Your bank account number: {account.AccountNumber}");
-            Console.WriteLine($"Balance: {account.Balance}");
+            Console.WriteLine($"Login: {_storage.User.Login}");
+            Console.WriteLine($"Your bank account number: {_storage.BankAccount.AccountNumber}");
+            Console.WriteLine($"Balance: {_storage.BankAccount.Balance}");
             Console.ReadKey();
         }
 
-        public void UserLoginedMenu(string login, int index)
+        public void UserLoginedMenu()
         {
             int choice;
             bool exit = true;
 
-            User user = _userManagement.GetUserInfo(login);
-            Settings settings = new Settings();
-
-            BankAccount bankAccount = new BankAccount();
-            bankAccount.AccountNumber = user.Accounts[index].AccountNumber;
+            Settings settings = new Settings(_storage);
 
             BasicAccountOperations accountOperations = new BasicAccountOperations();
 
@@ -211,7 +210,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             {
                 Console.Clear();
 
-                Console.WriteLine("You logged successfully, welcome: " + login + "\n");
+                Console.WriteLine("You logged successfully, welcome: " + _storage.User.Login + "\n");
                 Console.WriteLine("Choose the option 1-3");
                 Console.WriteLine("1.Show bank account details");
                 Console.WriteLine("2.Options");
@@ -223,12 +222,11 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                 switch (choice)
                 {
                     case 1:
-                        ShowUserInfo(login, int.Parse(bankAccount.AccountNumber));
+                        ShowUserInfo();
                             break;
 
                     case 2:
                         settings.SettingsMenu(login, index);
-                        exit = false;
                         break;
 
                     case 3:

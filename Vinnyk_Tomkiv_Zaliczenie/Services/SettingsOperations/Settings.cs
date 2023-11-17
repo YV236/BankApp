@@ -14,16 +14,16 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
     {
         private readonly IBankAccountManagement _bankAccountManagement;
         private readonly IUserManagement _userManagement;
-        private readonly IMenu _menu;
+        private readonly Storage _storage;
 
-        public Settings()
+        public Settings(Storage storage)
         {
             _bankAccountManagement = new BankAccountManagement();
             _userManagement = new UserManagement();
-            _menu = new MenuManagement();
+            _storage = storage;
         }
 
-        public void SettingsMenu(string login, int index)
+        public void SettingsMenu()
         {
             int choice;
             bool exit = true;
@@ -44,13 +44,13 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
                 switch (choice)
                 {
                     case 1:
-                        ShowBankAccounts(login);
+                        ShowBankAccounts();
                         exit = false;
                         break;
 
                     case 2:
                         BankAccount bankAccount = _bankAccountManagement.BankAccReg();
-                        _bankAccountManagement.AddBankAcc(bankAccount, login);
+                        _bankAccountManagement.AddBankAcc(bankAccount, _storage.User.Login);
                         Console.WriteLine("New Bank account have been added");
                         Console.ReadKey();
                         break;
@@ -58,18 +58,15 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
                     case 3:
                         Console.WriteLine("Bank acc removed");
                         Console.ReadKey();
-                        exit = false;
                         break;
 
                     case 4:
                         Console.WriteLine("User removed");
                         Console.ReadKey();
-                        exit = false;
                         break;
 
                     case 5:
                         exit = false;
-                        _menu.UserLoginedMenu(login, index);
                         break;
 
                     default:
@@ -81,10 +78,10 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
 
         }
 
-        public void ShowBankAccounts(string login)
+        public void ShowBankAccounts()
         {
             Console.Clear();
-            User user = _userManagement.GetUserInfo(login);
+            User user = _storage.User;
 
             for (int i = 0; i < user.Accounts.Count; i++)
             {
@@ -98,20 +95,18 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
             Console.WriteLine("Please choose the account");
             int index = int.Parse(Console.ReadLine());
 
-            int accNum = int.Parse(user.Accounts[index - 1].AccountNumber);
-
-
             if (index > 0 && index <= user.Accounts.Count)
             {
-                BankAccount bankAccount = _bankAccountManagement.GetBankAccInfo(login, accNum);
+                int accNum = int.Parse(user.Accounts[index - 1].AccountNumber);
+
+                BankAccount bankAccount = _bankAccountManagement.GetBankAccInfo(user.Login, accNum);
 
                 //_bankAccountManagement.ChangeBankAccount(index,login);
 
                 Console.WriteLine("You have switched to account number: " + accNum);
 
                 Console.ReadKey();
-
-               _menu.UserLoginedMenu(login, index - 1);
+                _storage.BankAccount = bankAccount;
                 
             }
             else

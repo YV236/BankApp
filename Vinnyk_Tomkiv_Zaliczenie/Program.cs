@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vinnyk_Tomkiv_Zaliczenie;
 using Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation;
+using Vinnyk_Tomkiv_Zaliczenie.Models;
 
 namespace Vinnyk_Tomkiv_Zaliczenie
 {
@@ -13,6 +14,8 @@ namespace Vinnyk_Tomkiv_Zaliczenie
     {
         public static void Main(string[] args)
         {
+            Storage storage = new Storage();
+
             if (!File.Exists(ConstVar.FileBankAccpath))
             {
                 File.Create(ConstVar.FileBankAccpath).Close();
@@ -24,7 +27,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie
                 File.Create(ConstVar.FileUserpath).Close();
                 File.WriteAllText(ConstVar.FileUserpath, "[]");
             }
-            MenuManagement menuManagment = new MenuManagement();
+            MenuManagement menuManagment = new MenuManagement(storage);
             menuManagment.Menu();
         }
     }

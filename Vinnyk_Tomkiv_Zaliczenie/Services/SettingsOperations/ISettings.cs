@@ -8,7 +8,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations
 {
     public interface ISettings
     {
-        void SettingsMenu(string login,  int bankAccId);
-        void ShowBankAccounts(string login);
+        void SettingsMenu();
+        void ShowBankAccounts();
     }
 }

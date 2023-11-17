@@ -7,12 +7,22 @@ using System.Threading.Tasks;
 using Vinnyk_Tomkiv_Zaliczenie;
 using Vinnyk_Tomkiv_Zaliczenie.Models;
 using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement;
+using Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagements;
+using Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation;
 
 namespace Vinnyk_Tomkiv_Zaliczenie
 {
     // Клас для рахунку зберігання
     public class BasicAccountOperations : BankAccountManagement
     {
+        private readonly IBankAccountManagement _bankAccountManagement;
+        private readonly IUserManagement _userManagement;
+
+        public BasicAccountOperations()
+        {
+            _bankAccountManagement = new BankAccountManagement();
+            _userManagement = new UserManagement();
+        }
         public void OperationsMenu(string login, int accNum)
         {
             int choice;
@@ -106,10 +116,23 @@ namespace Vinnyk_Tomkiv_Zaliczenie
         }
 
         // Логіка переказу з рахунку зберігання на інший рахунок
-        public override void Transfer(BankAccount targetAccount, double amount)
+        public override void Transfer(BankAccount targetAccount, BankAccount bankAccount, double amount)
         {
+            Console.Clear();
+            string login = targetAccount.Id;
+            User user = _userManagement.GetUserInfo(login);
 
+            for (int i = 0; i < user.Accounts.Count; i++)
+            {
+                BankAccount account = user.Accounts[i];
+                Console.Write($"{i + 1}.Account num: ");
+                Console.Write(account.AccountNumber);
+                Console.Write("; Balance: ");
+                Console.WriteLine(account.Balance + "\n");
+            }
 
+            Console.WriteLine("Please choose the account");
+            int index = int.Parse(Console.ReadLine());
         }
     }
 
