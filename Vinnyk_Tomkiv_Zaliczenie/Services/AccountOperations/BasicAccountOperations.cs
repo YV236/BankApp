@@ -37,11 +37,11 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.AccountOperations
                     break;
 
                 case 2:
-                    Withdraw(_storage.BankAccount.AccountNumber);
+                    Withdraw();
                     break;
 
                 case 3:
-                    Console.WriteLine("Transfer");
+                    Transfer();
                     break;
 
                 case 4:
@@ -67,6 +67,9 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.AccountOperations
                     _storage.User = userTemp;
                     _storage.BankAccount = bankAccountTemp;
 
+                    Console.WriteLine(
+                        $"Deposited {amount} PLN to account {bankAccountTemp.AccountNumber} . New balance:  {bankAccountTemp.Balance} PLN");
+
                     break;
                 }
 
@@ -78,7 +81,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.AccountOperations
         }
 
         // Логіка зняття грошей з рахунку зберігання
-        private void Withdraw(string accNum)
+        private void Withdraw()
         {
             BankAccount account = _storage.BankAccount;
 
@@ -98,7 +101,10 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.AccountOperations
 
                         _storage.User = userTemp;
                         _storage.BankAccount = bankAccountTemp;
-                        
+
+                        Console.WriteLine(
+                            $"Withdrawed {amount} PLN from account {bankAccountTemp.AccountNumber}. New balance: {bankAccountTemp.Balance} PLN");
+
                         break;
                     }
 
@@ -115,10 +121,11 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.AccountOperations
         }
 
         // Логіка переказу з рахунку зберігання на інший рахунок
-        public void Transfer(BankAccount targetAccount, BankAccount bankAccount, double amount)
+        public void Transfer()
         {
             Console.Clear();
-            string login = targetAccount.UserLogin;
+            Console.WriteLine("Please, write the user login");
+            string login = Console.ReadLine();
             User user = _userManagement.GetUserInfo(login);
 
             for (int i = 0; i < user.Accounts.Count; i++)
@@ -132,6 +139,48 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.AccountOperations
 
             Console.WriteLine("Please choose the account");
             int index = int.Parse(Console.ReadLine());
+
+           while(true)
+            {
+                Console.Clear();
+
+                if (index > 0 && index <= user.Accounts.Count)
+                {
+                    var account = user.Accounts[index - 1];
+
+                    Console.Write("How much you want to transfer: ");
+
+                    if (double.TryParse(Console.ReadLine(), out double amount) && amount > 0)
+                    {
+                        if (amount < _storage.BankAccount.Balance)
+                        {
+                            _bankAccountManagement.Deposit(ref user,ref account, amount);
+
+                            var userTemp = _storage.User;
+                            var bankAccountTemp = _storage.BankAccount;
+                            _bankAccountManagement.Withdraw(ref userTemp, ref bankAccountTemp, amount);
+
+                            _storage.User = userTemp;
+                            _storage.BankAccount = bankAccountTemp;
+
+                            Console.WriteLine(
+                                $"Transfered {amount} from your {bankAccountTemp.AccountNumber} account to {user.Login}" +
+                                $" {account.AccountNumber} account number");
+
+                            break;
+                        }
+
+                        Console.WriteLine("There are not enough funds in your balance to withdraw");
+                    }
+
+                }
+                else
+                {
+                    Console.WriteLine("Invalid account number selection");
+                }
+            }
+
+            Console.ReadKey();
         }
     }
 }

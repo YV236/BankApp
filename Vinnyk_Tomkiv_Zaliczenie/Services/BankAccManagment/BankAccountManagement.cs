@@ -29,8 +29,8 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment
             {
                 bankAccount.UserLogin = userLogin;
                 user.Accounts.Add(bankAccount);
-
                 File.WriteAllText(ConstVar.FileUserpath, JsonConvert.SerializeObject(userList));
+
             }
             else
             {
@@ -100,8 +100,6 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment
             user = userDb;
             account = selectedAccount;
 
-            Console.WriteLine(
-                $"Deposited {amount} PLN to account {selectedAccount.AccountNumber}. New balance: {selectedAccount.Balance} PLN");
         }
 
         public void Withdraw(ref User user, ref BankAccount account, double amount)
@@ -126,8 +124,6 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment
             user = userDb;
             account = selectedAccount;
 
-            Console.WriteLine(
-                $"Withdrawed {amount} PLN from account {selectedAccount.AccountNumber}. New balance: {selectedAccount.Balance} PLN");
         }
 
         public virtual void Transfer(BankAccount targetAccount, BankAccount bankAccount, double amount)

@@ -57,6 +57,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
 
                     default:
                         Console.WriteLine("Error try another option 1-3.");
+                        Console.ReadKey();
                         break;
                 }
             }

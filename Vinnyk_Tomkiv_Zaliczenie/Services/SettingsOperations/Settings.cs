@@ -10,12 +10,10 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.SettingsOperations
     public class Settings : MenuScreen
     {
         private readonly IBankAccountManagement _bankAccountManagement;
-        private readonly IUserManagement _userManagement;
 
         public Settings(Storage storage) : base(storage)
         {
             _bankAccountManagement = new BankAccountManagement();
-            _userManagement = new UserManagement();
         }
 
         public override void Menu()
@@ -25,7 +23,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.SettingsOperations
             while (exit)
             {
                 Console.Clear();
-                Console.WriteLine("What would you like to do");
+                Console.WriteLine("What would you like to do\n");
                 Console.WriteLine("1.Change bank account");
                 Console.WriteLine("2.Add new bank account");
                 Console.WriteLine("3.Remove bank account");
