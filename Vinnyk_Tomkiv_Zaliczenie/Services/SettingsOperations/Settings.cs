@@ -10,10 +10,14 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.SettingsOperations
     public class Settings : MenuScreen
     {
         private readonly IBankAccountManagement _bankAccountManagement;
+        private readonly MenuScreen _menuScreen;
+        private readonly IUserManagement _userManagement;
 
         public Settings(Storage storage) : base(storage)
         {
             _bankAccountManagement = new BankAccountManagement();
+            _menuScreen = new MenuScreen(storage);
+            _userManagement = new UserManagement();
         }
 
         public override void Menu()
@@ -54,8 +58,13 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.SettingsOperations
                         break;
 
                     case 4:
+                        var storageUser1 = Storage.User;
+                        Storage.User = _userManagement.RemoveUser(storageUser1.Login);
                         Console.WriteLine("User removed");
                         Console.ReadKey();
+                        exit = false;
+
+                        _menuScreen.UserLoggedInMenu();
                         break;
 
                     case 5:

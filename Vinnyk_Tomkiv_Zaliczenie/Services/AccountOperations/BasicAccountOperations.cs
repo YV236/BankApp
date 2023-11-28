@@ -23,6 +23,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.AccountOperations
         {
             Console.Clear();
 
+            Console.WriteLine("What would you like to do\n");
             Console.WriteLine("1.Deposit");
             Console.WriteLine("2.Withdraw");
             Console.WriteLine("3.Transfer to another user");

@@ -13,6 +13,21 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagements
 {
     public class UserManagement : IUserManagement
     {
+
+        public User RemoveUser(string login)
+        {
+            string userListStr = File.ReadAllText(ConstVar.FileUserpath);
+
+            var userList = JsonConvert.DeserializeObject<List<User>>(userListStr);
+
+            User user = userList.FirstOrDefault(u => u.Login == login);
+            userList.Remove(user);
+
+            File.WriteAllText(ConstVar.FileUserpath, JsonConvert.SerializeObject(userList));
+
+            return user = null ;
+        }
+
         public void AddUser(User customer)
         {
             string userListStr = File.ReadAllText(ConstVar.FileUserpath);

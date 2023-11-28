@@ -17,6 +17,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
             _userManagement = new UserManagement();
         }
 
+
         public User RemoveFromUserBankAccList(string accountNum, string userLogin)
         {
             string userListStr = File.ReadAllText(ConstVar.FileUserpath);

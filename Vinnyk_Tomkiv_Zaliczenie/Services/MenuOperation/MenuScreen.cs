@@ -175,7 +175,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                 User user = _userManagement.GetUserInfo(logLogin);
                 Storage.User = user;
                 Storage.BankAccount = user.Accounts.First();
-                UserLoginedMenu();
+                UserLoggedInMenu();
             }
             else
             {
@@ -194,7 +194,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             Console.ReadKey();
         }
 
-        private void UserLoginedMenu()
+        public void UserLoggedInMenu()
         {
             bool exit = true;
 
@@ -204,39 +204,47 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
 
             while (exit)
             {
-                Console.Clear();
-
-                Console.WriteLine("You logged successfully, welcome: " + Storage.User.Login + "\n");
-                Console.WriteLine("Choose the option 1-3");
-                Console.WriteLine("1.Show bank account details");
-                Console.WriteLine("2.Options");
-                Console.WriteLine("3.Operations");
-                Console.WriteLine("4.Exit to main menu");
-
-                var choice = int.Parse(Console.ReadLine());
-
-                switch (choice)
+                if(Storage.User != null)
                 {
-                    case 1:
-                        ShowUserInfo();
-                        break;
+                    Console.Clear();
 
-                    case 2:
-                        settings.Menu();
-                        break;
+                    Console.WriteLine("You logged in successfully, welcome: " + Storage.User.Login + "\n");
+                    Console.WriteLine("Choose the option 1-3");
+                    Console.WriteLine("1.Show bank account details");
+                    Console.WriteLine("2.Options");
+                    Console.WriteLine("3.Operations");
+                    Console.WriteLine("4.Exit to main menu");
 
-                    case 3:
-                        accountOperations.OperationsMenu();
-                        break;
+                    var choice = int.Parse(Console.ReadLine());
 
-                    case 4:
-                        exit = false;
-                        break;
+                    switch (choice)
+                    {
+                        case 1:
+                            ShowUserInfo();
+                            break;
 
-                    default:
-                        Console.WriteLine("Choose the option 1-3");
-                        break;
+                        case 2:
+                            settings.Menu();
+                            break;
+
+                        case 3:
+                            accountOperations.OperationsMenu();
+                            break;
+
+                        case 4:
+                            exit = false;
+                            break;
+
+                        default:
+                            Console.WriteLine("Choose the option 1-3");
+                            break;
+                    }
                 }
+                else
+                {
+                    exit = false;
+                }
+
             }
         }
         
