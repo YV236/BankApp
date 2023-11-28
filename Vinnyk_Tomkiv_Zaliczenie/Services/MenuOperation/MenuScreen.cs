@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Vinnyk_Tomkiv_Zaliczenie;
 using Vinnyk_Tomkiv_Zaliczenie.Models;
 using Vinnyk_Tomkiv_Zaliczenie.Services.AccountOperations;
-using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment;
+using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement;
 using Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagements;
 using Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations;
 using Vinnyk_Tomkiv_Zaliczenie.Services.SettingsOperations;

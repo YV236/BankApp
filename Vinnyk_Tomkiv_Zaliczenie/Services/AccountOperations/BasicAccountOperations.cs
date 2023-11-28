@@ -1,6 +1,6 @@
 ﻿using System;
 using Vinnyk_Tomkiv_Zaliczenie.Models;
-using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment;
+using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement;
 using Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagements;
 
 namespace Vinnyk_Tomkiv_Zaliczenie.Services.AccountOperations

@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Vinnyk_Tomkiv_Zaliczenie.Models;
 using Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagements;
 
-namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment
+namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
 {
     public class BankAccountManagement : IBankAccountManagement
     {
@@ -15,6 +15,28 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment
         public BankAccountManagement()
         {
             _userManagement = new UserManagement();
+        }
+
+        public User RemoveFromUserBankAccList(string accountNum, string userLogin)
+        {
+            string userListStr = File.ReadAllText(ConstVar.FileUserpath);
+
+            var userList = JsonConvert.DeserializeObject<List<User>>(userListStr);
+
+            User user = userList.FirstOrDefault(u => u.Login == userLogin);
+            BankAccount bankAccount = user.Accounts.FirstOrDefault(b => b.AccountNumber == accountNum);
+
+            if (user != null)
+            {
+                user.Accounts.Remove(bankAccount);
+                File.WriteAllText(ConstVar.FileUserpath, JsonConvert.SerializeObject(userList));
+            }
+            else
+            {
+                Console.WriteLine("Bank Account not found with the specified number.");
+            }
+
+            return user;
         }
 
         private void AddToUserBankAccList(BankAccount bankAccount, string userLogin)
@@ -30,7 +52,6 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment
                 bankAccount.UserLogin = userLogin;
                 user.Accounts.Add(bankAccount);
                 File.WriteAllText(ConstVar.FileUserpath, JsonConvert.SerializeObject(userList));
-
             }
             else
             {

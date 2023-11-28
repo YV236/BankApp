@@ -1,6 +1,6 @@
 ﻿using System;
 using Vinnyk_Tomkiv_Zaliczenie.Models;
-using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagment;
+using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement;
 using Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagements;
 using Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation;
 using Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations;
@@ -43,14 +43,14 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.SettingsOperations
                         var storageUser = Storage.User;
                         _bankAccountManagement.CreateNewBankAccount(ref storageUser);
                         Storage.User = storageUser;
-                        
+
                         Console.WriteLine("New Bank account have been added");
                         Console.ReadKey();
                         break;
 
                     case 3:
-                        Console.WriteLine("Bank acc removed");
-                        Console.ReadKey();
+                        RemoveBankAccount();
+                        exit = false;
                         break;
 
                     case 4:
@@ -71,7 +71,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.SettingsOperations
 
         }
 
-        public void ShowBankAccounts()
+        private void ShowBankAccounts()
         {
             Console.Clear();
             User user = Storage.User;
@@ -91,12 +91,46 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.SettingsOperations
             if (index > 0 && index <= user.Accounts.Count)
             {
                 var account = user.Accounts[index - 1];
-                
+
                 Console.WriteLine("You have switched to account number: " + account.AccountNumber);
 
                 Console.ReadKey();
                 Storage.BankAccount = account;
-                
+
+            }
+            else
+            {
+                Console.WriteLine("Invalid account number selection");
+            }
+        }
+
+        public void RemoveBankAccount()
+        {
+            Console.Clear();
+            User user = Storage.User;
+
+            for (int i = 0; i < user.Accounts.Count; i++)
+            {
+                BankAccount account = user.Accounts[i];
+                Console.Write($"{i + 1}.Account num: ");
+                Console.Write(account.AccountNumber);
+                Console.Write("; Balance: ");
+                Console.WriteLine(account.Balance + "\n");
+            }
+
+            Console.WriteLine("Please choose the account");
+            int index = int.Parse(Console.ReadLine());
+
+            if (index > 0 && index <= user.Accounts.Count)
+            {
+                var account = user.Accounts[index - 1];
+
+                Console.WriteLine($"Your account number: {account.AccountNumber}, have been removed");
+
+                Storage.User = _bankAccountManagement.RemoveFromUserBankAccList(account.AccountNumber, user.Login);
+
+                Console.ReadKey();
+                Storage.BankAccount = Storage.User.Accounts[0];
             }
             else
             {
