@@ -13,13 +13,31 @@ using Vinnyk_Tomkiv_Zaliczenie.Services.SettingsOperations;
 
 namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
 {
+    /// <MenuScreen_Class>
+    /// 
+    /// A class for highlighting the main menus, the registration menu and the account login menu
+    /// 
+    /// </MenuScreen_Class>
     public class MenuScreen
     {
+        //A private field _userManagement is declared, which represents an object that implements the IUserManagement interface
         private readonly IUserManagement _userManagement;
+        //A private field _bankAccountManagement is declared, which represents an object that implements the IBankAccountManagement interface.
         private readonly IBankAccountManagement _bankAccountManagement;
+        //Declares a protected Storage field that represents an object of the Storage class. This field can be used in derived classes.
         protected readonly Storage Storage;
+        //A MaxAttempts constant with a value of 6 is declared to represent the maximum number of attempts during the registration process.
         private const int MaxAttempts = 6;
-        
+
+        /// <Constructor>
+        /// 
+        /// This is the constructor of the MenuScreen class.
+        /// Accepts a storage parameter of type Storage and initializes the Storage field with this value.
+        /// Creates a new UserManagement object and assigns it to the _userManagement field.
+        /// Similarly, it creates a BankAccountManagement object and assigns it to the _bankAccountManagement field.
+        /// 
+        /// </Constructor>
+        /// <param name="storage"></param>
         public MenuScreen(Storage storage)
         {
             Storage = storage;
@@ -27,6 +45,9 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
             _bankAccountManagement = new BankAccountManagement();
         }
 
+        /// <Menu_Method>
+        /// This Menu method represents the textual user interface for the application's main menu.
+        /// </Menu_Method>
         public virtual void Menu()
         {
             bool exit = true;
@@ -62,6 +83,10 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                 }
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
 
         private void RenderRegisterMenu()
         {

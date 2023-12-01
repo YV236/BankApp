@@ -74,10 +74,5 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagements
             return userList.Any(x => x.Login == newLogin);
         }
 
-        public void RemoveUser(User customer)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }
