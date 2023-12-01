@@ -58,11 +58,9 @@
     <Compile Include="Services\MenuOperation\MenuScreen.cs" />
     <Compile Include="Services\SettingsOperations\ISettings.cs" />
     <Compile Include="Services\SettingsOperations\Settings.cs" />
-    <Compile Include="Services\TransactionManagement\ITransactionManagement.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AccountOperations\BasicAccountOperations.cs" />
-    <Compile Include="Models\Transaction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

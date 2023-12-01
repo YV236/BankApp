@@ -8,6 +8,10 @@ using Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagements;
 
 namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
 {
+    /// <summary>
+    /// This line defines the beginning of the BankAccountManagement class, which implements the IBankAccountManagement interface.
+    /// The class has a private field _userManagement that is used to interact with user management methods.
+    /// </summary>
     public class BankAccountManagement : IBankAccountManagement
     {
         private readonly IUserManagement _userManagement;
@@ -17,6 +21,14 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
             _userManagement = new UserManagement();
         }
 
+        /// <summary>
+        /// This RemoveFromUserBankAccList method removes a user's bank account by number and login.
+        /// The method reads user data from a file, deserializes it into a list, finds the user by login and bank account by its number,
+        /// removes the account from the list, and serializes the updated list.
+        /// </summary>
+        /// <param name="accountNum"></param>
+        /// <param name="userLogin"></param>
+        /// <returns User></returns>
 
         public User RemoveFromUserBankAccList(string accountNum, string userLogin)
         {
@@ -40,6 +52,14 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
             return user;
         }
 
+        /// <summary>
+        /// This private AddToUserBankAccList method adds a new bank account to the user's account list.
+        /// The method reads user data from a file, deserializes it into a list, finds the user by login,
+        /// sets the user's login to the new account, adds the account to the list, and serializes the updated list.
+        /// </summary>
+        /// <param name="bankAccount"></param>
+        /// <param name="userLogin"></param>
+
         private void AddToUserBankAccList(BankAccount bankAccount, string userLogin)
         {
             string userListStr = File.ReadAllText(ConstVar.FileUserpath);
@@ -60,6 +80,14 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
             }
         }
 
+        /// <summary>
+        /// This CreateNewBankAccount method creates a new bank account for the user. 
+        /// The method generates a unique account number, creates a new BankAccount object,
+        /// adds it to the list of user accounts, and serializes the updated user data.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns BankAccount></returns>
+
         public BankAccount CreateNewBankAccount(ref User user)
         {
             var bankAccount = new BankAccount
@@ -75,6 +103,13 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
 
             return bankAccount;
         }
+
+        /// <summary>
+        /// This private GenerateBankAccId method generates a unique number for a new bank account
+        /// by checking whether the number already exists in the list of existing accounts.
+        /// </summary>
+        /// <param name="bankAccounts"></param>
+        /// <returns AccountNumber></returns>
 
         private string GenerateBankAccId(List<BankAccount> bankAccounts)
         {
@@ -96,6 +131,15 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
 
             return accNumber.ToString();
         }
+
+        /// <summary>
+        /// This Deposit method performs the operation of replenishing the balance of the bank account.
+        /// The method reads user data from a file, finds the user and his account by login and number,
+        /// increases the account balance by the specified amount, and serializes the updated data.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="account"></param>
+        /// <param name="amount"></param>
 
         public void Deposit(ref User user, ref BankAccount account, double amount)
         {
@@ -123,6 +167,15 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
             account = selectedAccount;
 
         }
+
+        /// <summary>
+        /// This Withdraw method performs the operation of withdrawing funds from the bank account. 
+        /// The method reads user data from a file, finds the user and his account by login and number,
+        /// reduces the account balance by the specified amount, and serializes the updated data.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="account"></param>
+        /// <param name="amount"></param>
 
         public void Withdraw(ref User user, ref BankAccount account, double amount)
         {

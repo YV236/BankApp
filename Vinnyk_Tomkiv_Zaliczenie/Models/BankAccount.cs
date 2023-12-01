@@ -8,11 +8,14 @@ using Vinnyk_Tomkiv_Zaliczenie;
 
 namespace Vinnyk_Tomkiv_Zaliczenie.Models
 {
-    // Базовий клас банківського рахунку
+    // Basic bank account class
     public class BankAccount
     {
+        // Using the user's login as an ID
         public string UserLogin { get; set; }
+        // Bank account number which is unique
         public string AccountNumber { get; set; }
+        // Bank account balance
         public double Balance { get; set; }
 
     }

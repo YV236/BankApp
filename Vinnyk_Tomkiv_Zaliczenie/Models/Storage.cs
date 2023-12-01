@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Vinnyk_Tomkiv_Zaliczenie.Models
 {
+    /// <Storage>
+    /// A special class for working with a program containing BankAccount and User class objects.
+    /// </Storage>
     public class Storage
     {
         public BankAccount BankAccount { get; set; }

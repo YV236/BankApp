@@ -4,7 +4,7 @@ using Vinnyk_Tomkiv_Zaliczenie.Models;
 
 namespace Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagements
 {
-    // Інтерфейс для керування клієнтами
+    // Customer management interface
     public interface IUserManagement
     {
         User RemoveUser(string login);

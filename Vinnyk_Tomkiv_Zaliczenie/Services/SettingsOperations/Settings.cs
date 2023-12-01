@@ -13,12 +13,17 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.SettingsOperations
         private readonly MenuScreen _menuScreen;
         private readonly IUserManagement _userManagement;
 
+        // A class constructor that takes a storage object and passes it to the MenuScreen base class
+
         public Settings(Storage storage) : base(storage)
         {
+            // Initialize objects to manage bank accounts, menu screens, and users
             _bankAccountManagement = new BankAccountManagement();
             _menuScreen = new MenuScreen(storage);
             _userManagement = new UserManagement();
         }
+
+        // Overridden the Menu method from the base class
 
         public override void Menu()
         {
@@ -44,6 +49,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.SettingsOperations
                         break;
 
                     case 2:
+                        // Adding a new bank account
                         var storageUser = Storage.User;
                         _bankAccountManagement.CreateNewBankAccount(ref storageUser);
                         Storage.User = storageUser;

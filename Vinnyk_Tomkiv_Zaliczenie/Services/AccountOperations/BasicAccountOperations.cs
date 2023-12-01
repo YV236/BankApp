@@ -108,8 +108,12 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.AccountOperations
 
                         break;
                     }
+                    else
+                    {
+                        Console.WriteLine("There are not enough funds in your balance to withdraw");
+                        break;
+                    }
 
-                    Console.WriteLine("There are not enough funds in your balance to withdraw");
                 }
                 else
                 {
@@ -170,8 +174,12 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.AccountOperations
 
                             break;
                         }
+                        else
+                        {
+                            Console.WriteLine("There are not enough funds in your balance to transfer");
+                            break;
+                        }
 
-                        Console.WriteLine("There are not enough funds in your balance to withdraw");
                     }
 
                 }
