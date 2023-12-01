@@ -11,7 +11,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Models
     // Basic bank account class
     public class BankAccount
     {
-        // Using the user's login as an ID
+        // Using the user's login as an ID (User Login is unique)
         public string UserLogin { get; set; }
         // Bank account number which is unique
         public string AccountNumber { get; set; }

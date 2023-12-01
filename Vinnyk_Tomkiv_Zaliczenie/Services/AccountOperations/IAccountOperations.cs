@@ -9,7 +9,7 @@ using Vinnyk_Tomkiv_Zaliczenie.Models;
 
 namespace Vinnyk_Tomkiv_Zaliczenie
 {
-    // Інтерфейс для операцій на рахунках
+    // Interface for operations on accounts
     public interface IAccountOperations
     {
         void Deposit(double amount);

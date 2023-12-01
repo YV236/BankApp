@@ -8,7 +8,6 @@ using Vinnyk_Tomkiv_Zaliczenie.Models;
 using Vinnyk_Tomkiv_Zaliczenie.Services.AccountOperations;
 using Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement;
 using Vinnyk_Tomkiv_Zaliczenie.Services.CustomerManagements;
-using Vinnyk_Tomkiv_Zaliczenie.Services.OptionOperations;
 using Vinnyk_Tomkiv_Zaliczenie.Services.SettingsOperations;
 
 namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
@@ -338,6 +337,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
 
                         default:
                             Console.WriteLine("Choose the option 1-3");
+                            Console.ReadKey();
                             break;
                     }
                 }
@@ -385,6 +385,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                         break;
                     default:
                         Console.WriteLine("Choose the option 1-3");
+                        Console.ReadKey();
                         break;
                 }
             }

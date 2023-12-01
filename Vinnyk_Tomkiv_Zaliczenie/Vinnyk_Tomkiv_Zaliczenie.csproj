@@ -56,7 +56,6 @@
     <Compile Include="Services\CustomerManagments\UserManagement.cs" />
     <Compile Include="Services\CustomerManagments\IUserManagement.cs" />
     <Compile Include="Services\MenuOperation\MenuScreen.cs" />
-    <Compile Include="Services\SettingsOperations\ISettings.cs" />
     <Compile Include="Services\SettingsOperations\Settings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

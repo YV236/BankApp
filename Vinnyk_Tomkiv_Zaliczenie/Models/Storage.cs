@@ -8,6 +8,7 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Models
 {
     /// <Storage>
     /// A special class for working with a program containing BankAccount and User class objects.
+    /// This class are created for better work with current bank account and current user
     /// </Storage>
     public class Storage
     {

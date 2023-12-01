@@ -21,33 +21,49 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.AccountOperations
 
         public void OperationsMenu()
         {
-            Console.Clear();
+            bool exit = true;
 
-            Console.WriteLine("What would you like to do\n");
-            Console.WriteLine("1.Deposit");
-            Console.WriteLine("2.Withdraw");
-            Console.WriteLine("3.Transfer to another user");
-            Console.WriteLine("4.Exit to menu");
 
-            var choice = int.Parse(Console.ReadLine());
-
-            switch (choice)
+            while (exit)
             {
-                case 1:
-                    Deposit();
-                    break;
+                Console.Clear();
+                Console.WriteLine("What would you like to do\n");
+                Console.WriteLine("1.Deposit");
+                Console.WriteLine("2.Withdraw");
+                Console.WriteLine("3.Transfer to another user");
+                Console.WriteLine("4.Exit to menu");
 
-                case 2:
-                    Withdraw();
-                    break;
+                var choice = int.Parse(Console.ReadLine());
 
-                case 3:
-                    Transfer();
-                    break;
+                switch (choice)
+                {
+                    case 1:
+                        Deposit();
+                        exit = false;
+                        break;
 
-                case 4:
-                    break;
+                    case 2:
+                        Withdraw();
+                        exit = false;
+                        break;
+
+                    case 3:
+                        Transfer();
+                        exit = false;
+                        break;
+
+                    case 4:
+                        exit = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Try another option between 1-4");
+                        Console.ReadKey();
+                        break;
+                }
             }
+
+           
         }
 
         // Логіка внесення грошей на рахунок зберігання
@@ -133,61 +149,70 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.AccountOperations
             string login = Console.ReadLine();
             User user = _userManagement.GetUserInfo(login);
 
-            for (int i = 0; i < user.Accounts.Count; i++)
+            if (user != null)
             {
-                BankAccount account = user.Accounts[i];
-                Console.Write($"{i + 1}.Account num: ");
-                Console.Write(account.AccountNumber);
-                Console.Write("; Balance: ");
-                Console.WriteLine(account.Balance + "\n");
-            }
-
-            Console.WriteLine("Please choose the account");
-            int index = int.Parse(Console.ReadLine());
-
-           while(true)
-            {
-                Console.Clear();
-
-                if (index > 0 && index <= user.Accounts.Count)
+                for (int i = 0; i < user.Accounts.Count; i++)
                 {
-                    var account = user.Accounts[index - 1];
+                    BankAccount account = user.Accounts[i];
+                    Console.Write($"{i + 1}.Account num: ");
+                    Console.Write(account.AccountNumber);
+                    Console.Write("; Balance: ");
+                    Console.WriteLine(account.Balance + "\n");
+                }
 
-                    Console.Write("How much you want to transfer: ");
+                Console.WriteLine("Please choose the account");
+                int index = int.Parse(Console.ReadLine());
 
-                    if (double.TryParse(Console.ReadLine(), out double amount) && amount > 0)
+                while (true)
+                {
+                    Console.Clear();
+
+                    if (index > 0 && index <= user.Accounts.Count)
                     {
-                        if (amount < _storage.BankAccount.Balance)
+                        var account = user.Accounts[index - 1];
+
+                        Console.Write("How much you want to transfer: ");
+
+                        if (double.TryParse(Console.ReadLine(), out double amount) && amount > 0)
                         {
-                            _bankAccountManagement.Deposit(ref user,ref account, amount);
+                            if (amount < _storage.BankAccount.Balance)
+                            {
+                                _bankAccountManagement.Deposit(ref user, ref account, amount);
 
-                            var userTemp = _storage.User;
-                            var bankAccountTemp = _storage.BankAccount;
-                            _bankAccountManagement.Withdraw(ref userTemp, ref bankAccountTemp, amount);
+                                var userTemp = _storage.User;
+                                var bankAccountTemp = _storage.BankAccount;
+                                _bankAccountManagement.Withdraw(ref userTemp, ref bankAccountTemp, amount);
 
-                            _storage.User = userTemp;
-                            _storage.BankAccount = bankAccountTemp;
+                                _storage.User = userTemp;
+                                _storage.BankAccount = bankAccountTemp;
 
-                            Console.WriteLine(
-                                $"Transfered {amount} from your {bankAccountTemp.AccountNumber} account to {user.Login}" +
-                                $" {account.AccountNumber} account number");
+                                Console.WriteLine(
+                                    $"Transfered {amount} from your {bankAccountTemp.AccountNumber} account to {user.Login}" +
+                                    $" {account.AccountNumber} account number");
 
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("There are not enough funds in your balance to transfer");
-                            break;
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("There are not enough funds in your balance to transfer");
+                                break;
+                            }
+
                         }
 
                     }
-
-                }
-                else
-                {
-                    Console.WriteLine("Invalid account number selection");
+                    else
+                    {
+                        Console.WriteLine("Invalid account number selection");
+                        Console.ReadKey();
+                    }
                 }
             }
+            else
+            {
+                Console.WriteLine("There is no user with this login, please try another one");
+            }
+           
 
             Console.ReadKey();
         }
