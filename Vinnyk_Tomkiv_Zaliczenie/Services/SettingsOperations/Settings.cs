@@ -50,6 +50,8 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.SettingsOperations
 
                         case 2:
                             // Adding a new bank account
+
+                            // Initialize the var type element for work with the method
                             var storageUser = Storage.User;
                             _bankAccountManagement.CreateNewBankAccount(ref storageUser);
                             Storage.User = storageUser;
