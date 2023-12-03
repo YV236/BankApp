@@ -201,8 +201,5 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.BankAccManagement
 
         }
 
-        public virtual void Transfer(BankAccount targetAccount, BankAccount bankAccount, double amount)
-        {
-        }
     }
 }

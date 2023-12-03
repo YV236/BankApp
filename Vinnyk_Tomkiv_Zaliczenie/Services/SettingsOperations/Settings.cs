@@ -36,51 +36,77 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.SettingsOperations
                 Console.WriteLine("4.Remove user");
                 Console.WriteLine("5.Exit settings");
 
-                var choice = int.Parse(Console.ReadLine());
+                // Reading the user's selection from the console and converting it to an integer.
+                // If User write something wrong, or press enter without text, program will catch this and say about this error.
 
-                switch (choice)
+                if (int.TryParse(Console.ReadLine(), out int choice) && choice > 0)
                 {
-                    case 1:
-                        ShowBankAccounts();
-                        exit = false;
-                        break;
+                    switch (choice)
+                    {
+                        case 1:
+                            ShowBankAccounts();
+                            exit = false;
+                            break;
 
-                    case 2:
-                        // Adding a new bank account
-                        var storageUser = Storage.User;
-                        _bankAccountManagement.CreateNewBankAccount(ref storageUser);
-                        Storage.User = storageUser;
+                        case 2:
+                            // Adding a new bank account
+                            var storageUser = Storage.User;
+                            _bankAccountManagement.CreateNewBankAccount(ref storageUser);
+                            Storage.User = storageUser;
 
-                        Console.WriteLine("New Bank account have been added");
-                        Console.ReadKey();
-                        break;
+                            Console.WriteLine("New Bank account have been added");
+                            Console.ReadKey();
+                            break;
 
-                    case 3:
-                        // Call the RemoveBankAccount method
-                        RemoveBankAccount();
-                        exit = false;
-                        break;
+                        case 3:
+                            // Call the RemoveBankAccount method
+                            RemoveBankAccount();
+                            exit = false;
+                            break;
 
-                    case 4:
-                        // Initialize the var type element for work with the method
-                        var storageUser1 = Storage.User;
-                        // The RemoveUser method return null because the User is removed
-                        Storage.User = _userManagement.RemoveUser(storageUser1.Login);
+                        case 4:
+                            bool haveFunds = true;
+                            // Initialize the var type element for work with the method
+                            var storageUser1 = Storage.User;
 
-                        Console.WriteLine("User removed");
-                        Console.ReadKey();
-                        exit = false;
+                            foreach(var account in storageUser1.Accounts)
+                            {
+                                if(account.Balance > 0)
+                                {
+                                    haveFunds = false;
+                                }
+                            }
+                            // The RemoveUser method return null because the User is removed
+                            if(haveFunds)
+                            {
+                                Storage.User = _userManagement.RemoveUser(storageUser1.Login);
 
-                        break;
+                                Console.WriteLine("User removed");
+                            }
+                            else
+                            {
+                                Console.WriteLine("You have funds in one of your accounts. Please, withdraw money from the account before deleting the user.");
+                            }
 
-                    case 5:
-                        exit = false;
-                        break;
+                            Console.ReadKey();
+                            exit = false;
 
-                    default:
-                        Console.WriteLine("Error try another option 1-5.");
-                        Console.ReadKey();
-                        break;
+                            break;
+
+                        case 5:
+                            exit = false;
+                            break;
+
+                        default:
+                            Console.WriteLine("Error try another option 1-5.");
+                            Console.ReadKey();
+                            break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid choice selection, please try again.");
+                    Console.ReadKey();
                 }
             }
 
@@ -106,27 +132,35 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.SettingsOperations
 
             //The user's selection of the desired account.
             Console.WriteLine("Please choose the account");
-            int index = int.Parse(Console.ReadLine());
 
-            //If user's selection is right the current account will change
-            if (index > 0 && index <= user.Accounts.Count)
+            if (int.TryParse(Console.ReadLine(), out int index) && index > 0)
             {
-                // Initialize the var type element for work with the method
-                var account = user.Accounts[index - 1];
+                //If user's selection is right the current account will change
+                if (index > 0 && index <= user.Accounts.Count)
+                {
+                    // Initialize the var type element for work with the method
+                    var account = user.Accounts[index - 1];
 
-                Console.WriteLine("You have switched to account number: " + account.AccountNumber);
+                    Console.WriteLine("You have switched to account number: " + account.AccountNumber);
 
-                Console.ReadKey();
+                    Console.ReadKey();
 
-                //Changing current bank account in storage class
-                Storage.BankAccount = account;
+                    //Changing current bank account in storage class
+                    Storage.BankAccount = account;
 
+                }
+                else
+                {
+                    Console.WriteLine("Invalid account number selection");
+                    Console.ReadKey();
+                }
             }
             else
             {
                 Console.WriteLine("Invalid account number selection");
                 Console.ReadKey();
             }
+
         }
 
         // A method for removing/deleting the chosen bank account
@@ -148,35 +182,41 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.SettingsOperations
 
             // The user's selection of the desired account.
             Console.WriteLine("Please choose the account");
-            int index = int.Parse(Console.ReadLine());
-
-            // If user's selection is right the current account will change
-            if (index > 0 && index <= user.Accounts.Count)
+            if (int.TryParse(Console.ReadLine(), out int index) && index > 0)
             {
-                // Choosing the bank account
-                var account = user.Accounts[index - 1];
-
-                // If there is money in the selected account, the program will notify the user about this and go to the UserLoggedInMenu.
-                if (account.Balance == 0)
+                // If user's selection is right the current account will change
+                if (index > 0 && index <= user.Accounts.Count)
                 {
-                    Console.WriteLine($"Your account number: {account.AccountNumber}, have been removed");
+                    // Choosing the bank account
+                    var account = user.Accounts[index - 1];
 
-                    // Deleting an account through the bank BankAccountManagement facility
-                    Storage.User = _bankAccountManagement.RemoveFromUserBankAccList(account.AccountNumber, user.Login);
+                    // If there is money in the selected account, the program will notify the user about this and go to the UserLoggedInMenu.
+                    if (account.Balance == 0)
+                    {
+                        Console.WriteLine($"Your account number: {account.AccountNumber}, have been removed");
 
-                    Console.ReadKey();
+                        // Deleting an account through the bank BankAccountManagement facility
+                        Storage.User = _bankAccountManagement.RemoveFromUserBankAccList(account.AccountNumber, user.Login);
 
-                    // Choosing the new current bank account in case the user deletes the current bank account.
-                    // If he deletes the bank account in index = 0 program will change the array of bank account
-                    // Storage.User.Accounts[1] will be Storage.User.Accounts[0]
-                    Storage.BankAccount = Storage.User.Accounts[0];
+                        Console.ReadKey();
+
+                        // Choosing the new current bank account in case the user deletes the current bank account.
+                        // If he deletes the bank account in index = 0 program will change the array of bank account
+                        // Storage.User.Accounts[1] will be Storage.User.Accounts[0]
+                        Storage.BankAccount = Storage.User.Accounts[0];
+                    }
+                    else
+                    {
+                        Console.WriteLine("You have funds in the selected account. Please, withdraw money from the account before deleting it.");
+                        Console.ReadKey();
+                    }
+
                 }
                 else
                 {
-                    Console.WriteLine("You have funds in the selected account. Please, withdraw money from the account before deleting it.");
+                    Console.WriteLine("Invalid account number selection");
                     Console.ReadKey();
                 }
-
             }
             else
             {

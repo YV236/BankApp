@@ -62,37 +62,45 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                 Console.WriteLine("2.Log in to user");
                 Console.WriteLine("3.Exit Program");
 
-                //Reading the user's selection from the console and converting it to an integer.
-                var choice = int.Parse(Console.ReadLine());
+                // Reading the user's selection from the console and converting it to an integer.
+                // If User write something wrong, or press enter without text, program will catch this and say about this error.
 
-                /// <summary>
-                 
-                /// A switch construct that handles user selection.
-                /// Calls the appropriate methods depending on the selection.
-                /// If menu item 3 is selected, the exit variable is set to false, which will exit the loop and terminate the program.
-                /// If the selection is incorrect, an error message is displayed.
-                 
-                /// </summary>
-
-                switch (choice)
+                if (int.TryParse(Console.ReadLine(), out int choice) && choice > 0)
                 {
-                    case 1:
-                        RenderRegisterMenu();
-                        break;
+                    /// <summary>
 
-                    case 2:
-                        WriteUserLogin();
-                        break;
+                    /// A switch construct that handles user selection.
+                    /// Calls the appropriate methods depending on the selection.
+                    /// If menu item 3 is selected, the exit variable is set to false, which will exit the loop and terminate the program.
+                    /// If the selection is incorrect, an error message is displayed.
 
-                    case 3:
-                        exit = false;
-                        break;
+                    /// </summary>
 
-                    default:
-                        Console.WriteLine("Error try another option 1-3.");
-                        Console.ReadKey();
-                        break;
+                    switch (choice)
+                    {
+                        case 1:
+                            RenderRegisterMenu();
+                            break;
+
+                        case 2:
+                            WriteUserLogin();
+                            break;
+
+                        case 3:
+                            exit = false;
+                            break;
+
+                        default:
+                            Console.WriteLine("Error try another option 1-3.");
+                            Console.ReadKey();
+                            break;
+                    }
                 }
+                else
+                {
+                    Console.WriteLine("Invalid choice selection, please try again.");
+                    Console.ReadKey();
+                }                
             }
         }
 
@@ -315,31 +323,40 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                     Console.WriteLine("3.Operations");
                     Console.WriteLine("4.Exit to main menu");
 
-                    var choice = int.Parse(Console.ReadLine());
+                    // Reading the user's selection from the console and converting it to an integer.
+                    // If User write something wrong, or press enter without text, program will catch this and say about this error.
 
-                    switch (choice)
+                    if (int.TryParse(Console.ReadLine(), out int choice) && choice > 0)
                     {
-                        case 1:
-                            ShowUserInfo();
-                            break;
+                        switch (choice)
+                        {
+                            case 1:
+                                ShowUserInfo();
+                                break;
 
-                        case 2:
-                            settings.Menu();
-                            break;
+                            case 2:
+                                settings.Menu();
+                                break;
 
-                        case 3:
-                            accountOperations.OperationsMenu();
-                            break;
+                            case 3:
+                                accountOperations.OperationsMenu();
+                                break;
 
-                        case 4:
-                            exit = false;
-                            break;
+                            case 4:
+                                exit = false;
+                                break;
 
-                        default:
-                            Console.WriteLine("Choose the option 1-3");
-                            Console.ReadKey();
-                            break;
+                            default:
+                                Console.WriteLine("Choose the option 1-3");
+                                Console.ReadKey();
+                                break;
+                        }
                     }
+                    else
+                    {
+                        Console.WriteLine("Invalid choice selection, please try again.");
+                        Console.ReadKey();
+                    }                    
                 }
                 else
                 {
@@ -366,28 +383,33 @@ namespace Vinnyk_Tomkiv_Zaliczenie.Services.MenuOperation
                 Console.WriteLine("2.Create a new user");
                 Console.WriteLine("3.Exit to main menu");
 
-                var choice = int.Parse(Console.ReadLine());
 
-                switch (choice)
+                // Reading the user's selection from the console and converting it to an integer.
+                // If User write something wrong, or press enter without text, program will catch this and say about this error.
+                if (int.TryParse(Console.ReadLine(), out int choice) && choice > 0)
                 {
-                    case 1:
-                        WriteUserLogin();
-                        exit = false;
-                        break;
+                    switch (choice)
+                    {
+                        case 1:
+                            WriteUserLogin();
+                            exit = false;
+                            break;
 
-                    case 2:
-                        RenderRegisterMenu();
-                        exit = false;
-                        break;
+                        case 2:
+                            RenderRegisterMenu();
+                            exit = false;
+                            break;
 
-                    case 3:
-                        exit = false;
-                        break;
-                    default:
-                        Console.WriteLine("Choose the option 1-3");
-                        Console.ReadKey();
-                        break;
+                        case 3:
+                            exit = false;
+                            break;
+                        default:
+                            Console.WriteLine("Choose the option 1-3");
+                            Console.ReadKey();
+                            break;
+                    }
                 }
+               
             }
         }
     }
