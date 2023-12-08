@@ -14,6 +14,9 @@ namespace Vinnyk_Tomkiv_Zaliczenie
     {
         public static void Main(string[] args)
         {
+            // Gets or sets the title to display in the console title bar.
+            Console.Title = "Poly Bank Application Vinnyk Tomkiv";
+
             // Creating an object of the Storage class for further work with the user and saving data.
             Storage storage = new Storage();
 
