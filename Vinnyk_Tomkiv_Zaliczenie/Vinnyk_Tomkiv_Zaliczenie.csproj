@@ -50,7 +50,6 @@
     <Compile Include="Models\BankAccount.cs" />
     <Compile Include="Models\Storage.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="Services\AccountOperations\IAccountOperations.cs" />
     <Compile Include="Services\BankAccManagment\BankAccountManagement.cs" />
     <Compile Include="Services\BankAccManagment\IBankAccountManagement.cs" />
     <Compile Include="Services\CustomerManagments\UserManagement.cs" />
